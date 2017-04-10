@@ -28,8 +28,7 @@ typedef struct item
 
 typedef struct buffer
 {
-	item items[32];
-	int size; // how many are currently in the buffer
+	item* items[32];
 } buffer;
 
 static buffer threadBuf; // Both threads will have access to this data
@@ -44,23 +43,68 @@ static pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
 static pthread_t consumer; // to identify the consumer thread
 static pthread_t producer; // " " "
 
+// Initialize buffer to entirely NULL, for adding and removing purposes
+void initializeBuffer()
+{
+	int i = 0;
+
+	for (i; i < 32; i++)
+		threadBuf.items[i] = NULL;
+}
+
 // *** CHECK STATUS OF BUFFER ***
 bool isBufFull()
 {
-	if (threadBuf.size == 32)
-		return true;
+	int i = 0;
 
-	else
-		return false;
+	for (i; i < 32; i++)
+	{
+		if (threadBuf.items[i] == NULL)
+			return false; 
+	}
+
+	return true;	
 }
 
 bool isBufEmpty()
 {
-	if (threadBuf.size == 0)
-		return true;
+	int i = 0;
 
-	else
-		return false;
+	for (i; i < 32; i++)
+	{
+		if (threadBuf.items[i] != NULL)
+			return false;
+	}
+
+	return true;
+}
+
+// for use with producer stuff, returns the first empty element of array
+int returnEmptyIndex()
+{
+	int i = 0;
+
+	for (i; i < 32; i++)
+	{
+		if (threadBuf.items[i] == NULL)
+			return i;
+	}
+
+	return -1;	
+}
+
+// for use with consumer, returns first full element of array
+int returnFullIndex()
+{
+	int i = 0;
+
+	for (i; i < 32; i++)
+	{
+		if (threadBuf.items[i] != NULL)
+			return i;
+	}
+
+	return -1;
 }
 
 // *** ASM STUFF: REGISTERS, RANDOM # GENERATION, ETC ***
@@ -103,92 +147,128 @@ int producerVal() // between 3 and 7
 	return r;
 }
 
-/*** FUNCTION FOR PRODUCER THREAD ***
+/*** FUNCTIONS FOR PRODUCER THREAD ***
 a) Wait a random time between 3-7 seconds
 b) Generate an item: 1) a random number 2) a random waiting period between 2-9
 It's a function pointer in accordance with POSIX standards
 If buffer is full, block until consumer removes an item
 */
 
+item* createRandomItem()
+{
+	item* i1 = malloc(sizeof(item));
+	i1->randomNum = itemFirstVal();
+	i1->waitTime = itemSecondVal();
+	return i1;
+}
+
+void addRandomItem(item* i1)
+{
+	int index = returnEmptyIndex();		
+	threadBuf.items[index] = i1;
+}
+
 void* produceAnItem()
 {
  	// Lock the buffer (mutexes)
- 	int mutexInfo;
-	mutexInfo = pthread_mutex_lock(&mutex);
+	pthread_mutex_lock(&mutex);
 	 
  	// Use pthread conditions, pthread_cond_wait to wait until 
  	// there's space in the buffer
- 	if (isBufFull() == true)
+ 	while (isBufFull() == true)
 		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
 		
  	// Buffer is not full, generate random number between 3-7 secs then wait that amount of time
- 	else
-	{
-		int randomWaitTime = producerVal();
-		printf("PRODUCER THREAD: Sleeping %d seconds before producing", randomWaitTime);
-		sleep(randomWaitTime);
+	int randomWaitTime = producerVal();
+	printf("PRODUCER THREAD: Sleeping %d seconds before producing\n", randomWaitTime);
+	sleep(randomWaitTime);
 
- 		// create random item
- 		item randomItem;
-		randomItem.randomNum = itemFirstVal();
-		randomItem.waitTime = itemSecondVal();
+ 	// create random item
+	item* i1 = createRandomItem(); 
 
-		// add item to buffer
-		threadBuf.items[size] = randomItem;
+	// add item to buffer
+	addRandomItem(i1);
 
- 		// increment buffer size
-		threadBuf.size++;
-
- 		// Signal to the consumer there's an item
- 		pthread_cond_signal(&condition);
+ 	// Signal to the consumer there's an item
+ 	pthread_cond_signal(&condition);
  	
-		// Unlock the buffer
- 		mutexInfo = pthread_mutex_unlock(&mutex);
-
-		if (mutexInfo == 0)
-		{
-			fprintf(stderr, "Error unlocking mutex. Exiting...\n");
-			exit(-1);
-		}
-	}			
+	// Unlock the buffer
+ 	pthread_mutex_unlock(&mutex);
+	
 }
 
 /*** FUNCTIONS FOR CONSUMER THREAD ***
 */
 
+void removeItem(int index)
+{
+	// free memory
+	free(threadBuf.items[index]);	
+
+	// turn the index NULL
+	threadBuf.items[index] = NULL;
+}
+
+item* getItem(int* index)
+{
+	// use returnFullindex
+	*(index) = returnFullIndex();
+
+	// return the item
+	int indx = *(index);
+	return threadBuf.items[indx];
+}
+
 void* consumeAnItem()
 {
  	// Lock the buffer (mutexes)
- 	int mutexInfo = pthread_mutex_lock(&mutex);
+ 	pthread_mutex_lock(&mutex);
  
- // Use pthread conditions, pthread_cond_wait to wait until
- // the buffer is not empty
- // Access the index
- // print out first value
- // wait the second value
- // print second value
- // write a function that erases that index, adjusts the array/size element
- // Use pthread conditions, pthread_cond_signal to wake up producer
- 	
-	// Unlock the buffer
-	mutexInfo = pthread_mutex_unlock(&mutex);
+ 	// Use pthread conditions, pthread_cond_wait to wait until
+ 	// the buffer is not empty
+ 	while (isBufEmpty() == true)
+		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
+		
+	// Get a full index for consumption
+	int indexToConsume;
+	item* itemToConsume = getItem(&indexToConsume);
 
-	if (mutexInfo == 0)
-	{
-		fprintf(stderr, "Error unlocking mutex. Exiting...\n");
-		exit(-1);
-	}	
+ 	// print out first value
+	printf("CONSUMER THREAD: Random value in first field is %d\n", itemToConsume->randomNum);  	
+
+ 	// wait the second value
+	sleep(itemToConsume->waitTime);	 	
+
+ 	// print second value
+ 	printf("CONSUMER THREAD: I just waited a random time of %d\n", itemToConsume->waitTime);
+
+
+ 	// write a function that erases that index, adjusts the array/size element
+ 	removeItem(indexToConsume);	
+
+	// Signal to the producer to make a new item
+ 	pthread_cond_signal(&condition);
+ 	 
+	// Unlock the buffer
+	pthread_mutex_unlock(&mutex);
+
 }
 
 int main()
 {
 	srand(time(NULL));
 
-	threadBuf.size = 0; // initialize our buffer to empty
-	
+	initializeBuffer(threadBuf);
+
 	// pthread_create: (ref to ID of thread, pointer to struct with option flags, pointer to function that will be start point of execution for thread, argument passed to the function of execution)
 	// For our first thread execution, produce an item.
-	pthread_create(&producer, NULL, produceAnItem, NULL);
+	
+	while(1)
+	{
+		pthread_create(&producer, NULL, produceAnItem, NULL);
+		pthread_create(&consumer, NULL, consumeAnItem, NULL);
+		pthread_join(consumer, NULL);
+	}
 
 	return 0;
 }
