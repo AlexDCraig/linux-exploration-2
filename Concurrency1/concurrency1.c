@@ -30,6 +30,24 @@ typedef struct buffer
 
 buffer threadBuf; // Both threads will have access to this data
 
+// *** CHECK STATUS OF BUFFER ***
+bool isBufFull()
+{
+	if (threadBuf.size == 32)
+		return true;
+
+	else
+		return false;
+}
+
+bool isBufEmpty()
+{
+	if (threadBuf.size == 0)
+		return true;
+
+	else
+		return false;
+}
 
 // *** ASM STUFF: REGISTERS, RANDOM # GENERATION, ETC ***
 
@@ -75,16 +93,43 @@ int producerVal() // between 3 and 7
 a) Wait a random time between 3-7 seconds
 b) Generate an item: 1) a random number 2) a random waiting period between 2-9
 It's a function pointer in accordance with POSIX standards
+If buffer is full, block until consumer removes an item
 */
 
 void* produceAnItem()
 {
-		
+ // Lock the buffer (mutexes)
+ // Use pthread conditions, pthread_cond_wait to wait until 
+ // there's space in the buffer
+ // wait 3-7 seconds
+ // create random data, put it into the buffer
+ // increment buffer size
+ // Use pthread conditions, pthread_cond_signal to wake up consumer
+ // Unlock the buffer			
+}
+
+/*** FUNCTIONS FOR CONSUMER THREAD ***
+*/
+
+void* consumeAnItem()
+{
+ // Lock the buffer (mutexes)
+ // Use pthread conditions, pthread_cond_wait to wait until
+ // the buffer is not empty
+ // Access the index
+ // print out first value
+ // wait the second value
+ // print second value
+ // write a function that erases that index, adjusts the array/size element
+ // Use pthread conditions, pthread_cond_signal to wake up producer
+ // Unlock the buffer
 }
 
 int main()
 {
 	srand(time(NULL));
+
+	threadBuf.size = 0; // initialize our buffer to empty
 	
 	pthread_t consumer; // to identify the consumer thread
 	pthread_t producer; // " " "
