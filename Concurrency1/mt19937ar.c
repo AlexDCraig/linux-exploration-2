@@ -170,7 +170,7 @@ double genrand_res53(void)
     return(a*67108864.0+b)*(1.0/9007199254740992.0); 
 } 
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
-
+/*
 int main(void)
 {
     int i;
@@ -188,3 +188,4 @@ int main(void)
     }
     return 0;
 }
+*/
