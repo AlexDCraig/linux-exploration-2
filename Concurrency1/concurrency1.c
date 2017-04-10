@@ -1,6 +1,10 @@
 /* Alex Hoffer
  * Concurrency 1 - Producer Consumer Problem
  * April 2017
+ * pthread resources: 
+ * a) https://computing.llnl.gov/tutorials/pthreads/
+ * b) Ben Brewster's OS 1 notes
+ * c) Michael Kerrisk's Linux Programming Interface book
  */
 
 #include <pthread.h>
@@ -15,7 +19,7 @@ typedef int bool;
 #define true 1
 #define false 0
 
-// *** Definition of structs, threadBuf is our buffer to be shared ***
+// *** Definition of structs, threadBuf is our global buffer to be shared, initialize mutex to protect our global buffer ***
 typedef struct item
 {
 	int randomNum; // Just a random number
@@ -28,7 +32,17 @@ typedef struct buffer
 	int size; // how many are currently in the buffer
 } buffer;
 
-buffer threadBuf; // Both threads will have access to this data
+static buffer threadBuf; // Both threads will have access to this data
+
+// Initialize the mutex we will be using to lock access to our global data in order to synchronize threads
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;	
+
+// Condition variables let one thread inform other threads about changes in the state of a shared variable and allows other threads to BLOCK in order to wait for this notification
+static pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
+
+// Pthread IDs for identification
+static pthread_t consumer; // to identify the consumer thread
+static pthread_t producer; // " " "
 
 // *** CHECK STATUS OF BUFFER ***
 bool isBufFull()
@@ -98,14 +112,45 @@ If buffer is full, block until consumer removes an item
 
 void* produceAnItem()
 {
- // Lock the buffer (mutexes)
- // Use pthread conditions, pthread_cond_wait to wait until 
- // there's space in the buffer
- // wait 3-7 seconds
- // create random data, put it into the buffer
- // increment buffer size
- // Use pthread conditions, pthread_cond_signal to wake up consumer
- // Unlock the buffer			
+ 	// Lock the buffer (mutexes)
+ 	int mutexInfo;
+	mutexInfo = pthread_mutex_lock(&mutex);
+	 
+ 	// Use pthread conditions, pthread_cond_wait to wait until 
+ 	// there's space in the buffer
+ 	if (isBufFull() == true)
+		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
+		
+ 	// Buffer is not full, generate random number between 3-7 secs then wait that amount of time
+ 	else
+	{
+		int randomWaitTime = producerVal();
+		printf("PRODUCER THREAD: Sleeping %d seconds before producing", randomWaitTime);
+		sleep(randomWaitTime);
+
+ 		// create random item
+ 		item randomItem;
+		randomItem.randomNum = itemFirstVal();
+		randomItem.waitTime = itemSecondVal();
+
+		// add item to buffer
+		threadBuf.items[size] = randomItem;
+
+ 		// increment buffer size
+		threadBuf.size++;
+
+ 		// Signal to the consumer there's an item
+ 		pthread_cond_signal(&condition);
+ 	
+		// Unlock the buffer
+ 		mutexInfo = pthread_mutex_unlock(&mutex);
+
+		if (mutexInfo == 0)
+		{
+			fprintf(stderr, "Error unlocking mutex. Exiting...\n");
+			exit(-1);
+		}
+	}			
 }
 
 /*** FUNCTIONS FOR CONSUMER THREAD ***
@@ -113,7 +158,9 @@ void* produceAnItem()
 
 void* consumeAnItem()
 {
- // Lock the buffer (mutexes)
+ 	// Lock the buffer (mutexes)
+ 	int mutexInfo = pthread_mutex_lock(&mutex);
+ 
  // Use pthread conditions, pthread_cond_wait to wait until
  // the buffer is not empty
  // Access the index
@@ -122,7 +169,15 @@ void* consumeAnItem()
  // print second value
  // write a function that erases that index, adjusts the array/size element
  // Use pthread conditions, pthread_cond_signal to wake up producer
- // Unlock the buffer
+ 	
+	// Unlock the buffer
+	mutexInfo = pthread_mutex_unlock(&mutex);
+
+	if (mutexInfo == 0)
+	{
+		fprintf(stderr, "Error unlocking mutex. Exiting...\n");
+		exit(-1);
+	}	
 }
 
 int main()
@@ -130,9 +185,6 @@ int main()
 	srand(time(NULL));
 
 	threadBuf.size = 0; // initialize our buffer to empty
-	
-	pthread_t consumer; // to identify the consumer thread
-	pthread_t producer; // " " "
 	
 	// pthread_create: (ref to ID of thread, pointer to struct with option flags, pointer to function that will be start point of execution for thread, argument passed to the function of execution)
 	// For our first thread execution, produce an item.
