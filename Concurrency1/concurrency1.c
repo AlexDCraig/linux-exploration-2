@@ -176,7 +176,10 @@ void* produceAnItem()
  	// Use pthread conditions, pthread_cond_wait to wait until 
  	// there's space in the buffer
  	while (isBufFull() == true)
+	{
+		printf("PRODUCER THREAD: Blocking until item is consumed\n");
 		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
+	}
 		
  	// Buffer is not full, generate random number between 3-7 secs then wait that amount of time
 	int randomWaitTime = producerVal();
@@ -227,7 +230,10 @@ void* consumeAnItem()
  	// Use pthread conditions, pthread_cond_wait to wait until
  	// the buffer is not empty
  	while (isBufEmpty() == true)
+	{
+		printf("CONSUMER THREAD: Blocking until item is produced.\n");
 		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
+	}
 		
 	// Get a full index for consumption
 	int indexToConsume;
@@ -242,6 +248,7 @@ void* consumeAnItem()
  	// print second value
  	printf("CONSUMER THREAD: I just waited a random time of %d\n", itemToConsume->waitTime);
 
+	sleep(2); // for clear printing
 
  	// write a function that erases that index, adjusts the array/size element
  	removeItem(indexToConsume);	
@@ -267,6 +274,9 @@ int main()
 	{
 		pthread_create(&producer, NULL, produceAnItem, NULL);
 		pthread_create(&consumer, NULL, consumeAnItem, NULL);
+	
+	// pthread_join(thread to wait on, return value of terminated thread)
+	// Wait on the consumer thread to terminate in some fashion 
 		pthread_join(consumer, NULL);
 	}
 
