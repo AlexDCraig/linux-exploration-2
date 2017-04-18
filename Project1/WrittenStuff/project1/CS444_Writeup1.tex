@@ -106,7 +106,31 @@ put code here
 \section{Log of Commands to Load Qemu}
 
 \section{Flags in the listed Qemu command line}
+The listed Qemu command line is:
+\begin{lstlisting}
+qemu-system-i386 -gdb tcp::???? -S -nographic -kernel bzImage-qemux86.bin -drive file=core-image-lsb-sdk-qemux86.ext3,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug".
+\end{lstlisting}
 
+The following list describes each flag:
+\begin{itemize}
+\item \emph{qemu-system-i386} is an executable module that launches system-mode emulations of PC-type CPU hardware.
+\item \emph{-gdb}
+\item \emph{tcp::????}
+\item \emph{-S}
+\item \emph{-nographic}
+\item \emph{-kernel}
+\item \emph{bxImage-qemux86.bin}
+\item \emph{-drive}
+\item \emph{file=core-image-lsb-sdk-qemux86.ext3,if=virtio}
+\item \emph{-enable-kvm}
+\item \emph{-net}
+\item \emph{none}
+\item \emph{-usb}
+\item \emph{-localtime}
+\item \emph{--no-reboot}
+\item \emph{--append}
+\item \emph{"root=/dev/vda rw console=ttyS0 debug".}
+\end{itemize}
 
 \section{Concurrency Writeup}
 
