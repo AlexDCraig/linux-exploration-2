@@ -122,23 +122,17 @@ qemu-system-i386 -gdb tcp::???? -S -nographic -kernel bzImage-qemux86.bin
 
 The following list describes each flag:
 \begin{itemize}
-\item \emph{qemu-system-i386} is an executable module that launches system-mode emulations of PC-type CPU hardware.
-\item \emph{-gdb}
-\item \emph{tcp::????}
-\item \emph{-S}
-\item \emph{-nographic}
-\item \emph{-kernel}
-\item \emph{bxImage-qemux86.bin}
-\item \emph{-drive}
-\item \emph{file=core-image-lsb-sdk-qemux86.ext3,if=virtio}
-\item \emph{-enable-kvm}
-\item \emph{-net}
-\item \emph{none}
-\item \emph{-usb}
-\item \emph{-localtime}
-\item \emph{--no-reboot}
-\item \emph{--append}
-\item \emph{"root=/dev/vda rw console=ttyS0 debug".}
+\item \emph{-gdb} tells the system to wait to connect to gdb on the device tcp::????, this device being passed in as an argument.
+\item \emph{-S} is a flag that tells the system to wait for a gdb connection.
+\item \emph{-nographic} is a visualization option that turns off graphical output.
+\item \emph{-kernel} is a flag that saves time and resources by granting the system a Linux kernel image, rather than requiring a full boot.
+\item \emph{-drive} handles disk options and takes 1 to n number of arguments to specify these options, in the case of this command the file we passed to this flag is parsed according to the virtio interface.
+\item \emph{-enable-kvm} is a flag that enables KVM virtualization support without any setting turned off.
+\item \emph{-net} is a flag that sets network options.
+\item \emph{-usb} is a flag that turns on the USB driver.
+\item \emph{-localtime} is a flag that tells the system to use local time.
+\item \emph{--no-reboot} tells the system to exit, not reboot, when rebooting is an option.
+\item \emph{--append} is a flag that represents the command line necessary to interact with the kernel.
 \end{itemize}
 
 \section{Concurrency Writeup}
