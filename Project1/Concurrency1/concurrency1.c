@@ -186,6 +186,8 @@ void* produceAnItem()
 	printf("PRODUCER THREAD: Sleeping %d seconds before producing\n", randomWaitTime);
 	sleep(randomWaitTime);
 
+	printf("PRODUCER THREAD: I am producing a random item\n");
+
  	// create random item
 	item* i1 = createRandomItem(); 
 
@@ -261,7 +263,23 @@ void* consumeAnItem()
 
 }
 
-int main()
+int loopCount(char** argv)
+{
+	if (argv[1] == NULL)
+	{
+		printf("No loop counter provided. Exiting...\n");
+		exit(1);
+	}
+
+	else
+	{
+		int loopCounter = atoi(argv[1]);
+		return loopCounter;
+	}
+
+}
+
+int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
@@ -270,7 +288,13 @@ int main()
 	// pthread_create: (ref to ID of thread, pointer to struct with option flags, pointer to function that will be start point of execution for thread, argument passed to the function of execution)
 	// For our first thread execution, produce an item.
 	
-	while(1)
+	int loopCounter = loopCount(argv);
+
+	int i = 0;
+
+	printf("# of times to run: %d\n", loopCounter);
+
+	for (i; i < loopCounter; i++)
 	{
 		pthread_create(&producer, NULL, produceAnItem, NULL);
 		pthread_create(&consumer, NULL, consumeAnItem, NULL);
