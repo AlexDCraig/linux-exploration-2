@@ -108,7 +108,16 @@ put code here
 \section{Flags in the listed Qemu command line}
 The listed Qemu command line is:
 \begin{lstlisting}
-qemu-system-i386 -gdb tcp::???? -S -nographic -kernel bzImage-qemux86.bin -drive file=core-image-lsb-sdk-qemux86.ext3,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug".
+qemu-system-i386 -gdb tcp::???? -S -nographic -kernel bzImage-qemux86.bin 
+\end{lstlisting}
+\begin{lstlisting}
+-drive file=core-image-lsb-sdk-qemux86.ext3,if=virtio -enable-kvm 
+\end{lstlisting}
+\begin{lstlisting}
+-net none -usb -localtime --no-reboot --append 
+\end{lstlisting}
+\begin{lstlisting}
+"root=/dev/vda rw console=ttyS0 debug".
 \end{lstlisting}
 
 The following list describes each flag:
