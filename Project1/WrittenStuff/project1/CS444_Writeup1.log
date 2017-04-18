@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  18 APR 2017 12:58
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  18 APR 2017 13:12
 entering extended mode
  %&-line parsing enabled.
 **CS444_Writeup1
@@ -527,14 +527,14 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 \openout7 = `CS444_Writeup1.hst'.
 
-] (./CS444_Writeup1.aux) ) 
+] [5] (./CS444_Writeup1.aux) ) 
 Here is how much of TeX's memory you used:
- 8321 strings out of 256215
- 107166 string characters out of 1917023
- 201532 words of memory out of 1500000
- 11478 multiletter control sequences out of 10000+200000
+ 8324 strings out of 256215
+ 107214 string characters out of 1917023
+ 202808 words of memory out of 1500000
+ 11481 multiletter control sequences out of 10000+200000
  7203 words of font info for 28 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  35i,7n,37p,1682b,993s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writeup1.dvi (5 pages, 25228 bytes).
+Output written on CS444_Writeup1.dvi (6 pages, 30548 bytes).
