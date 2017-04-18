@@ -20,18 +20,18 @@ typedef int bool;
 #define false 0
 
 // *** Definition of structs, threadBuf is our global buffer to be shared, initialize mutex to protect our global buffer ***
-typedef struct item
+struct item
 {
 	int randomNum; // Just a random number
 	int waitTime; // Random waiting period between 2 and 9 
-} item;
+}; 
 
-typedef struct buffer
+struct buffer
 {
-	item* items[32];
-} buffer;
+	struct item* items[32];
+}; 
 
-static buffer threadBuf; // Both threads will have access to this data
+static struct buffer threadBuf; // Both threads will have access to this data
 
 // Initialize the mutex we will be using to lock access to our global data in order to synchronize threads
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;	
@@ -154,15 +154,15 @@ It's a function pointer in accordance with POSIX standards
 If buffer is full, block until consumer removes an item
 */
 
-item* createRandomItem()
+struct item* createRandomItem()
 {
-	item* i1 = malloc(sizeof(item));
+	struct item* i1 = malloc(sizeof(struct item));
 	i1->randomNum = itemFirstVal();
 	i1->waitTime = itemSecondVal();
 	return i1;
 }
 
-void addRandomItem(item* i1)
+void addRandomItem(struct item* i1)
 {
 	int index = returnEmptyIndex();		
 	threadBuf.items[index] = i1;
@@ -189,7 +189,7 @@ void* produceAnItem()
 	printf("PRODUCER THREAD: I am producing a random item\n");
 
  	// create random item
-	item* i1 = createRandomItem(); 
+	struct item* i1 = createRandomItem(); 
 
 	// add item to buffer
 	addRandomItem(i1);
@@ -214,7 +214,7 @@ void removeItem(int index)
 	threadBuf.items[index] = NULL;
 }
 
-item* getItem(int* index)
+struct item* getItem(int* index)
 {
 	// use returnFullindex
 	*(index) = returnFullIndex();
@@ -239,7 +239,7 @@ void* consumeAnItem()
 		
 	// Get a full index for consumption
 	int indexToConsume;
-	item* itemToConsume = getItem(&indexToConsume);
+	struct item* itemToConsume = getItem(&indexToConsume);
 
  	// print out first value
 	printf("CONSUMER THREAD: Random value in first field is %d\n", itemToConsume->randomNum);  	
