@@ -135,12 +135,12 @@ The following list describes each flag:
 \item \emph{--append} is a flag that represents the command line necessary to interact with the kernel.
 \end{itemize}
 
-\section{Concurrency Writeup}
-
-\section{Reflection}
+\section{Concurrency}
 The following subsections answer the four questions as outlined on the Project 1 page on Kevin McGrath's course website.
 \subsection{Main point of assignment}
+There were several reasons for the assignment. One, I think, was to re-familiarize us with POSIX Threads, which we learned about in CS344 but likely forgot about before we got to this class. Second, I think that it was to teach us about the Producer-Consumer problem, which is a canonical example of concurrency. Third, it was to force us to use inline assembly language in our programs to help us learn how to implement ASM in C.
 \subsection{Personal approach to problem}
+My approach for the use of threads came from guidelines to the canonical Producer-Consumer problem that I found in the \emph{Linux Programming Interface} text. For example, statements like pthread\_create, pthread\_join, pthread\_t, pthread\_mutex\_t, and pthread\_cond\_t were all found in that book and that book instructed me on how to use them. I used these static pthread statements rather than dynamic ones because frankly, I could not think of a reason why dynamic ones would be necessary for the purposes of this assignment. My approach for the buffer and the item to be held in the buffer was just to use a struct to represent the buffer and a struct to represent the item and have the buffer hold a statically allocated array of pointers to items and for each item to have two data fields: a random number and a random waiting period, both that had to be implemented in ASM. Given the statements necessary to control threads and mutexes and the structs necessary to store data, I solved the problem by creating a thread to correspond to a Producer, having that Producer thread lock all of the shared data using a mutex and then produce a random item. After unlocking the shared data within the Producer thread, I created a Consumer thread that locked the data again, consumed the first non-null index in the buffer, and then unlocked the data again. I contained these Producer and Consumer thread creation statements in a forever loop (while(1)) so that when the program is run it is eternally creating producer and consumer threads and producing and consuming random data. 
 \subsection{Ensuring solution was correct}
 \subsection{What I learned}
 
