@@ -135,6 +135,9 @@ reboot
 q
 \end{lstlisting}
 
+\section{Writeup of Concurrency Solution}
+To solve the Producer-Consumer problem, I used POSIX threads and the -lpthreads flag on the command line to compile the program. Specifically, I made functions that corresponded to producing an item and consuming an item, I created a producer thread and passed it the producing an item void function, I created a consumer thread and passed it the consuming an item void function, and then I ran a loop joining the consumer thread to the producer thread. Within both producer/consumer functions, mutexes were used to lock and then unlock resources that could be subject to overwriting and ASM was used to randomly generate fields for item structures as well as waiting times for producer threads. A producer thread blocked, or "waited" for a consumer thread to consume an item, while a consumer thread "waited" if there was nothing to consume.
+
 \section{Flags in the listed Qemu command line}
 The listed Qemu command line is:
 \begin{lstlisting}
@@ -192,6 +195,9 @@ I learned more about POSIX thread functions, such as initializing them, the act 
 \vhEntry{11}{4.18.2017}{Alex}{Changed all typedefs of structs to just structs in accordance with Linus's coding style}
 \vhEntry{12}{4.18.2017}{Alex}{Add what I learned and how I ensured solution was correct sections to writeup}
 \vhEntry{13}{4.18.2017}{Alex}{Begin work on version control table}
+\vhEntry{14}{4.19.2017}{Alex}{implementing ASM randomizer}
+\vhEntry{15}{4.19.2017}{Alex}{Finish using ASM for randomization}
+\vhEntry{16}{4.19.2017}{Alex}{add nehemiah's latex part}
 \end{versionhistory}
 
 \section{Work log}
@@ -199,8 +205,8 @@ I learned more about POSIX thread functions, such as initializing them, the act 
 Alex added the Latex template file and got accustomed to using Kevin's makefile utilizing the commands \emph{latex latex.tex} and \emph{make}. He created the structs to hold the data as the assignment specified and looked into doing the ASM randomization. He made fake random functions in lieu of using the ASM which will be implemented last so he could begin primary development.
 \subsection{April 10-17}
 Alex used his Linux programming book to re-familiarize himself with mutexes, pthreads, etc. He was delighted to find examples of the Producer-Consumer problem in his book. He took a first pass at both void Producer-Consumer functions, complete with mutexes. He was also delighted to find out that both functions were easy to implement. Then, he began to do the Latex writeup. He wrote the abstract and got the basic structure of the file's sections and subsections established. Then, he wrote the part about the Qemu command line where he explained each flag that was used. Then, he answered the first two questions of the concurrency writeup section.  
-\subsection{April 18- }
-Alex read the Coding Style requirements on Kevin's page and got rid of the typedef'd structs he had set up initially because these were not kosher. He added a loop counter accessible from the command line so that for testing the software he could run the thread loop a set number of times. Then, he added the "What I learned" and "How I ensured the solution was correct" sections to the writeup, and then figured out how to make a nice looking version control log.
+\subsection{April 18-19}
+Alex read the Coding Style requirements on Kevin's page and got rid of the typedef'd structs he had set up initially because these were not kosher. He added a loop counter accessible from the command line so that for testing the software he could run the thread loop a set number of times. Then, he added the "What I learned" and "How I ensured the solution was correct" sections to the writeup, and then figured out how to make a nice looking version control log. For the finale of the project, Nehemiah wrote the list of all commands necessary for kernel build/yocto and Alex implemented ASM randomization functions using several different online resources (these resources are indicated in the comments of the code). 
 
 %\bibliographystyle{plain}
 %\bibliography{CS444_Writeup1}

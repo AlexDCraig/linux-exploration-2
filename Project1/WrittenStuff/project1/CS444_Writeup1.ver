@@ -55,4 +55,16 @@
  & 4.18.2017
  & \listset {Alex}
  & Begin work on version control table\\
+14
+ & 4.19.2017
+ & \listset {Alex}
+ & implementing ASM randomizer\\
+15
+ & 4.19.2017
+ & \listset {Alex}
+ & Finish using ASM for randomization\\
+16
+ & 4.19.2017
+ & \listset {Alex}
+ & add nehemiah's latex part\\
 \end {longtable}
