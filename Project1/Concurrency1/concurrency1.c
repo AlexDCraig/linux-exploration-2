@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "mt19937ar.c"
-
 #include <time.h>
 
 typedef int bool;
@@ -165,6 +164,14 @@ int genNumberWithinRange(int seed, int LB, int UB)
 	return rando;
 }
 
+// Get a random seed to initialize genrand_int32() with
+// random seed can be from 0 to the max 32-bit int size
+int initializeGenRand()
+{
+	int initializer = rand() % 4294967295;	
+	return initializer;
+}
+
 // this function will take a min and max, set all of the registers
 // for use with ASM up, check to see if x86 works, if it does it will
 // use rdrand, if it doesn't it will use the mersenne twister
@@ -178,13 +185,14 @@ int generateNumber(int lowerBound, int upperBound)
 	if (processorSupportsRDRAND() == true)
 		rdrand(&num);
 
+	// initialize the genrand() to a different number each time
 	// Use genrand_int32() from our included mt19937ar.c file
 	// The Mersenne Twister generates a number between [0,0xfffffff]
 	else {
-		int tmp;
-		tmp = (int)genrand_int32();
-		num = abs(tmp);
-		printf("Random number seed: %d\n", num);
+		int initializer = initializeGenRand();
+		init_genrand(initializer);
+		num = (int)genrand_int32();
+		num = abs(num);
 	}		
 
 	// Now that we have a random int as a seed, we can use a 
@@ -343,7 +351,6 @@ int loopCount(char** argv)
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-
 	initializeBuffer(threadBuf);
 
 	// pthread_create: (ref to ID of thread, pointer to struct with option flags, pointer to function that will be start point of execution for thread, argument passed to the function of execution)
@@ -353,17 +360,15 @@ int main(int argc, char** argv)
 
 	int i = 0;
 
-	printf("# of times to run: %d\n", loopCounter);
-
 	for (i; i < loopCounter; i++)
 	{
-		pthread_create(&producer, NULL, produceAnItem, NULL);
+		pthread_create(&producer, NULL, produceAnItem, NULL);	
 		pthread_create(&consumer, NULL, consumeAnItem, NULL);
 	
 	// pthread_join(thread to wait on, return value of terminated thread)
 	// Wait on the consumer thread to terminate in some fashion 
 		pthread_join(consumer, NULL);
 	}
-
+ 
 	return 0;
 }
