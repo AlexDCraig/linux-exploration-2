@@ -1,7 +1,7 @@
 /* Alex Hoffer
  * Concurrency 1 - Producer Consumer Problem
  * April 2017
- * pthread resources: 
+ * pthread resources:
  * a) https://computing.llnl.gov/tutorials/pthreads/
  * b) Ben Brewster's OS 1 notes
  * c) Michael Kerrisk's Linux Programming Interface book
@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "mt19937ar.c"
+#include <string.h>
 
 #include <time.h>
 
@@ -23,18 +24,18 @@ typedef int bool;
 struct item
 {
 	int randomNum; // Just a random number
-	int waitTime; // Random waiting period between 2 and 9 
-}; 
+	int waitTime; // Random waiting period between 2 and 9
+};
 
 struct buffer
 {
 	struct item* items[32];
-}; 
+};
 
 static struct buffer threadBuf; // Both threads will have access to this data
 
 // Initialize the mutex we will be using to lock access to our global data in order to synchronize threads
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;	
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // Condition variables let one thread inform other threads about changes in the state of a shared variable and allows other threads to BLOCK in order to wait for this notification
 static pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
@@ -60,10 +61,10 @@ bool isBufFull()
 	for (i; i < 32; i++)
 	{
 		if (threadBuf.items[i] == NULL)
-			return false; 
+			return false;
 	}
 
-	return true;	
+	return true;
 }
 
 bool isBufEmpty()
@@ -90,7 +91,7 @@ int returnEmptyIndex()
 			return i;
 	}
 
-	return -1;	
+	return -1;
 }
 
 // for use with consumer, returns first full element of array
@@ -123,7 +124,7 @@ bool checkProcessor()
 		return true; // rdrand can be supported
 	else
 		return false;
-} 
+}
 
 // ** Throw these functions away when the ASM is understood **
 int itemFirstVal() // between 0 and 10
@@ -157,14 +158,26 @@ If buffer is full, block until consumer removes an item
 struct item* createRandomItem()
 {
 	struct item* i1 = malloc(sizeof(struct item));
-	i1->randomNum = itemFirstVal();
-	i1->waitTime = itemSecondVal();
+	boolean rrandSupported = rrandSupport();
+
+	if(rrandSupported)
+    {
+        //use rrand
+        i1->randomNum = itemFirstVal();
+        i1->waitTime = itemSecondVal();
+	}
+	else
+    {
+        //use mt19937
+        i1->randomNum = itemFirstVal();
+        i1->waitTime = itemSecondVal();
+	}
 	return i1;
 }
 
 void addRandomItem(struct item* i1)
 {
-	int index = returnEmptyIndex();		
+	int index = returnEmptyIndex();
 	threadBuf.items[index] = i1;
 }
 
@@ -172,15 +185,15 @@ void* produceAnItem()
 {
  	// Lock the buffer (mutexes)
 	pthread_mutex_lock(&mutex);
-	 
- 	// Use pthread conditions, pthread_cond_wait to wait until 
+
+ 	// Use pthread conditions, pthread_cond_wait to wait until
  	// there's space in the buffer
  	while (isBufFull() == true)
 	{
 		printf("PRODUCER THREAD: Blocking until item is consumed\n");
 		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
 	}
-		
+
  	// Buffer is not full, generate random number between 3-7 secs then wait that amount of time
 	int randomWaitTime = producerVal();
 	printf("PRODUCER THREAD: Sleeping %d seconds before producing\n", randomWaitTime);
@@ -189,17 +202,17 @@ void* produceAnItem()
 	printf("PRODUCER THREAD: I am producing a random item\n");
 
  	// create random item
-	struct item* i1 = createRandomItem(); 
+	struct item* i1 = createRandomItem();
 
 	// add item to buffer
 	addRandomItem(i1);
 
  	// Signal to the consumer there's an item
  	pthread_cond_signal(&condition);
- 	
+
 	// Unlock the buffer
  	pthread_mutex_unlock(&mutex);
-	
+
 }
 
 /*** FUNCTIONS FOR CONSUMER THREAD ***
@@ -208,7 +221,7 @@ void* produceAnItem()
 void removeItem(int index)
 {
 	// free memory
-	free(threadBuf.items[index]);	
+	free(threadBuf.items[index]);
 
 	// turn the index NULL
 	threadBuf.items[index] = NULL;
@@ -228,7 +241,7 @@ void* consumeAnItem()
 {
  	// Lock the buffer (mutexes)
  	pthread_mutex_lock(&mutex);
- 
+
  	// Use pthread conditions, pthread_cond_wait to wait until
  	// the buffer is not empty
  	while (isBufEmpty() == true)
@@ -236,16 +249,16 @@ void* consumeAnItem()
 		printf("CONSUMER THREAD: Blocking until item is produced.\n");
 		pthread_cond_wait(&condition, &mutex); // let this thread sleep until consumer takes an item
 	}
-		
+
 	// Get a full index for consumption
 	int indexToConsume;
 	struct item* itemToConsume = getItem(&indexToConsume);
 
  	// print out first value
-	printf("CONSUMER THREAD: Random value in first field is %d\n", itemToConsume->randomNum);  	
+	printf("CONSUMER THREAD: Random value in first field is %d\n", itemToConsume->randomNum);
 
  	// wait the second value
-	sleep(itemToConsume->waitTime);	 	
+	sleep(itemToConsume->waitTime);
 
  	// print second value
  	printf("CONSUMER THREAD: I just waited a random time of %d\n", itemToConsume->waitTime);
@@ -253,11 +266,11 @@ void* consumeAnItem()
 	sleep(2); // for clear printing
 
  	// write a function that erases that index, adjusts the array/size element
- 	removeItem(indexToConsume);	
+ 	removeItem(indexToConsume);
 
 	// Signal to the producer to make a new item
  	pthread_cond_signal(&condition);
- 	 
+
 	// Unlock the buffer
 	pthread_mutex_unlock(&mutex);
 
@@ -279,6 +292,31 @@ int loopCount(char** argv)
 
 }
 
+boolean rrandSupport()
+{
+    unsigned int eax;
+	unsigned int ebx;
+	unsigned int ecx;
+	unsigned int edx;
+
+	char vendor[13];
+
+	eax = 0x01;
+
+	__asm__ __volatile__(
+	                     "cpuid;"
+	                     : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+	                     : "a"(eax)
+	                     );
+
+	if(ecx & 0x40000000){
+		return true;//use rdrand
+	}
+	else{
+		return false;//use mt19937
+	}
+}
+
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
@@ -287,7 +325,7 @@ int main(int argc, char** argv)
 
 	// pthread_create: (ref to ID of thread, pointer to struct with option flags, pointer to function that will be start point of execution for thread, argument passed to the function of execution)
 	// For our first thread execution, produce an item.
-	
+
 	int loopCounter = loopCount(argv);
 
 	int i = 0;
@@ -298,9 +336,9 @@ int main(int argc, char** argv)
 	{
 		pthread_create(&producer, NULL, produceAnItem, NULL);
 		pthread_create(&consumer, NULL, consumeAnItem, NULL);
-	
+
 	// pthread_join(thread to wait on, return value of terminated thread)
-	// Wait on the consumer thread to terminate in some fashion 
+	// Wait on the consumer thread to terminate in some fashion
 		pthread_join(consumer, NULL);
 	}
 
