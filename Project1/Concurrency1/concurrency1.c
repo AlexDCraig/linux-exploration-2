@@ -110,41 +110,102 @@ int returnFullIndex()
 // *** ASM STUFF: REGISTERS, RANDOM # GENERATION, ETC ***
 
 // Set up registers for random number generation
-unsigned int eax, ebx, ecx, edx;
+// Recall ebx is the only truly general purpose register
+unsigned int eax;
+unsigned int ebx;
+unsigned int ecx;
+unsigned int edx;
 
 // Source: http://codereview.stackexchange.com/questions/147656/checking-if-cpu-supports-rdrand
 // To check if the processor supports rdrand, see if the 30th bit
 // in the ecx register is set.
 // If it is, return true. If not, return false.
 // Call this function ONLY after preparing the registers
-bool checkProcessor()
+bool processorSupportsRDRAND()
 {
-	if (ecx & 1<<30)
+	if (ecx & 0x40000000) // the register can hold a number big enough
 		return true; // rdrand can be supported
 	else
 		return false;
 } 
 
-// ** Throw these functions away when the ASM is understood **
+// Sources: http://stackoverflow.com/questions/11407103/how-i-can-get-the-random-number-from-intels-processor-with-assembler for implementing rdrand
+// https://www.codeproject.com/Articles/15971/Using-Inline-Assembly-in-C-C for basics on using inline assembly
+// http://web.engr.oregonstate.edu/cgi-bin/cgiwrap/dmcgrath/classes/17S/cs444/index.cgi?examples=examples/rdrand_test.c for everything else
+// https://hackage.haskell.org/package/crypto-random-0.0.9/src/cbits/rdrand.c for actual use of rdrand
+
+// Set the registers up, prepare them for storage
+void prepareRegisters()
+{
+	eax = 0x01; // set eax like mcgrath said
+
+	__asm__ __volatile__("cpuid;" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(eax)); // use ASM to set up registers like mcgrath said
+}
+
+// courtesy of stack overflow
+// can only be used by registers that go up to 0xfffffff
+// The random number generated might be able to be negative,
+// so take its abs()
+void rdrand(int* num)
+{
+	char rc;    
+        __asm__ volatile(
+                "rdrand %0 ; setc %1"
+                : "=r" (*num), "=qm" (rc));
+
+	int newNum = *(num);
+	int tmp = abs(newNum);
+	*num = tmp;
+}
+
+int genNumberWithinRange(int seed, int LB, int UB)
+{
+	int rando;
+	rando = (seed % (UB + 1 - LB)) + LB;
+	return rando;
+}
+
+// this function will take a min and max, set all of the registers
+// for use with ASM up, check to see if x86 works, if it does it will
+// use rdrand, if it doesn't it will use the mersenne twister
+// it returns an integer between x and y
+int generateNumber(int lowerBound, int upperBound)
+{
+	prepareRegisters();
+
+	int num = 0;
+
+	if (processorSupportsRDRAND() == true)
+		rdrand(&num);
+
+	// Use genrand_int32() from our included mt19937ar.c file
+	// The Mersenne Twister generates a number between [0,0xfffffff]
+	else {
+		int tmp;
+		tmp = (int)genrand_int32();
+		num = abs(tmp);
+		printf("Random number seed: %d\n", num);
+	}		
+
+	// Now that we have a random int as a seed, we can use a 
+	// simple calculation to get a random # within a range
+	return genNumberWithinRange(num, lowerBound, upperBound);
+}
+
+// Use the random number gen to get values for use with structs
 int itemFirstVal() // between 0 and 10
 {
-	int r;
-	r = (rand() % (10 + 1));
-	return r;
+	return generateNumber(0, 10);
 }
 
 int itemSecondVal() // between 2 and 9
 {
-	int r;
-	r = (rand() % (9 + 1 - 2)) + 2;
-	return r;
+	return generateNumber(2,9);
 }
 
 int producerVal() // between 3 and 7
 {
-	int r;
-	r = (rand() % (7 + 1 - 3)) + 3;
-	return r;
+	return generateNumber(3,7);
 }
 
 /*** FUNCTIONS FOR PRODUCER THREAD ***
