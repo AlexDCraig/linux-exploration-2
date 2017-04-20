@@ -1,3 +1,8 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{russ121}
+Mark~E. Russinovich, David~A. Solomon, and Alex Ionescu.
+\newblock {\em Windows internals}.
+\newblock Microsoft Press, 2012.
 
 \end{thebibliography}
