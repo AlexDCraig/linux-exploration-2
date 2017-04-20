@@ -1,5 +1,6 @@
 /* Alex Hoffer
  * Nehemiah Edwards
+ * Ryan Kitchen
  * Concurrency 1 - Producer Consumer Problem
  * April 2017
  * pthread resources: 
