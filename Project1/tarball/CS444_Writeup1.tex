@@ -116,20 +116,28 @@ gdb
 
 (terminal #2)
 source /scratch/opt/environment-setup-i586-poky-linux
-
 cd /scratch/spring2017/10-04
 cp /scratch/spring2017/files/core-image-lsb-sdk-qemux86.ext3 .
 /scratch/spring2017/files/core-image-lsb-sdk-qemux86.ext3 .
 qemu-system-i386 -gdb tcp::6504 -S -nographic -kernel bzImage-qemux86.bin -drive file=core-image-lsb-sdk-qemux86.ext3,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug
+
+(terminal 1)
 gdb
 target remote :6504
 continue
+
+(terminal 2)
 root
 uname -a
 reboot
 qemu-system-i386 -gdb tcp::6504 -S -nographic -kernel linux-yocto-3.14/arch/x86/boot/bzImage  -drive file=core-image-lsb-sdk-qemux86.ext3,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug
+
+(terminal 1)
+gdb
 target remote :6504
 continue
+
+(terminal 2)
 root
 uname -a
 reboot
