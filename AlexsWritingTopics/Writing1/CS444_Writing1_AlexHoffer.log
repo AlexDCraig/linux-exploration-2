@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  20 APR 2017 14:53
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  20 APR 2017 15:05
 entering extended mode
  %&-line parsing enabled.
 **CS444_Writing1_AlexHoffer
@@ -442,22 +442,32 @@ LaTeX Info: Redefining \pageref on input line 65.
  [1
 
 ]
-(./CS444_Writing1_AlexHoffer.toc)
+(./CS444_Writing1_AlexHoffer.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+ (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
+
+(/usr/share/texmf/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+))
 \tf@toc=\write5
 \openout5 = `CS444_Writing1_AlexHoffer.toc'.
 
- [1] [2] (./CS444_Writing1_AlexHoffer.bbl
+ [1] [2]
+(./CS444_Writing1_AlexHoffer.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
 ) [3] (./CS444_Writing1_AlexHoffer.aux) ) 
 Here is how much of TeX's memory you used:
- 7692 strings out of 256215
- 100562 string characters out of 1917023
- 187136 words of memory out of 1500000
- 10893 multiletter control sequences out of 10000+200000
- 4553 words of font info for 17 fonts, out of 1200000 for 2000
+ 7741 strings out of 256215
+ 101448 string characters out of 1917023
+ 191945 words of memory out of 1500000
+ 10929 multiletter control sequences out of 10000+200000
+ 6857 words of font info for 27 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  30i,6n,37p,236b,371s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writing1_AlexHoffer.dvi (4 pages, 5280 bytes).
+Output written on CS444_Writing1_AlexHoffer.dvi (4 pages, 22848 bytes).
