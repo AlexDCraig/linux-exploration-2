@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{ker10}
+Michael Kerrisk.
+\newblock {\em The Linux Programming Interface: A Linux and UNIX System
+  Programming Handbook}.
+\newblock No Starch Press, San Francisco, CA, USA, 1st edition, 2010.
+
 \bibitem{mck15}
 Marshall~Kirk. McKusick, George~V. Neville-Neil, and Robert N.~M. Watson.
 \newblock {\em The design and implementation of the FreeBSD operating system}.
