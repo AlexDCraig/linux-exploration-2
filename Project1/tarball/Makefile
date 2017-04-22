@@ -28,5 +28,10 @@ read:
 aread:
 	acroread ${TARGET}.pdf
 
+concurrency1: concurrency1.c 
+	gcc -pthread -o concurrency1 concurrency1.c -g
+
 clean:
-	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg
+	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg concurrency1
+
+
