@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{har04}
+Johnson~M. Hart.
+\newblock {\em Windows System Programming (3rd Edition)}.
+\newblock Addison-Wesley Professional, 2004.
+
 \bibitem{ker10}
 Michael Kerrisk.
 \newblock {\em The Linux Programming Interface: A Linux and UNIX System
