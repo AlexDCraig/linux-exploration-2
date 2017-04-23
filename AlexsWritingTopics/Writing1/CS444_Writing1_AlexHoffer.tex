@@ -96,54 +96,87 @@
 
 
 \section{Windows}
-\cite{rus122} \cite{rus121} 
-\cite{mck15} \cite{ker10} \cite{har04}
-The Windows operating system has many similarities and differences to Linux, and
- since it is proprietary software, it is not prone to the robust open source development that Linux is famous for. Nevertheless, Windows systems programming is well documented, and with the help of several resources we can get a good picture of how Windows manages processes, threads, and CPU scheduling time. 
+\cite{mck15} \cite{ker10} 
 
 \subsection{Processes}
-Processes are the fundamental building blocks of any operating system, and Windows' processes contain a lot of nuances that make process management seem, to me, more complex than in Linux. The following subsections denote where in Windows processes I see similarities to Linux and where I think there are differences between the two. Through this course of explanation, we will get a good idea of how Windows manages processes and reasons why Windows manages processes like they do. 
 
 \subsubsection{Similarities to Linux}
 \paragraph{Process Creation}
-When a new process is created in either Windows or Linux, the new process is also given a newly created thread. Processes in both Windows and Linux can have 1 or more threads assigned to them, though multithreaded programs in Windows are easier to program (the explanation for this can be found in the \emph{Differences from Linux} section of this work). Additionally, newly created processes in Windows are allocated similar memory resources to that of Linux. Each process on both systems has specially allocated memory segments corresponding to the text segment, initialized data segment, uninitialized data segment, stack, and heap of the running program. 
+When a new process is created in either Windows or Linux, the new process is also given a newly created thread. Processes in both Windows and Linux can have 1 or more threads assigned to them, though multithreaded programs in Windows are easier to program (the explanation for this can be found in the \emph{Differences from Linux} section of this work). Additionally, newly created processes in Windows are allocated similar memory resources to that of Linux. Each process on both systems has specially allocated memory segments corresponding to the text segment, initialized data segment, uninitialized data segment, stack, and heap of the running program that are unique for that specific process.
 \paragraph{Process Identification}
 Both offer the ability to get the currently running process' ID, with \emph{GetCurrentProcessId} in Windows and \emph{getpid()} in Linux. Windows and Linux are also both subject to \emph{race conditions}, or the tendency for a program to rely on one process to complete a sequence of actions before another process completes its own sequence, since both of their processes are subject to a level of nondeterminism (more on this in the \emph{CPU Scheduling} section.
-\paragraph{Process Termination}
+\paragraph{Process Termination/Exiting}
 A process can terminate in Windows and Linux in either a normal or abnormal fashion. Termination in normal or abnormal fashion for both of these systems yields an exit value that other processes can access. When a process dies in either Windows or Linux, if it has a child that has not properly been waited for and no terminating signal has been sent by the user, then the child process will continue to run, now known as a \emph{zombie}. 
 \subsubsection{Differences from Linux}
 \paragraph{Process Creation} To create a new process in Windows, we must execute a \emph{CreateProcess} call. To do this same function in Linux, we traditionally use a \emph{fork}. The differences between these calls is indicative of how the two operating systems handle the parent and child relationship inherent in a process hierarchy. Specifically, \emph{CreateProcess} takes 10 arguments, including (but not limited to) desired security attributes, creation flags, and environment. The \emph{CreateProcess} function signature is listed below:
 \begin{lstlisting}
 BOOL WINAPI CreateProcess(
-  \_In\_opt\_    LPCTSTR               lpApplicationName,
-  \_Inout\_opt\_ LPTSTR                lpCommandLine,
-  \_In\_opt\_    LPSECURITY\_ATTRIBUTES lpProcessAttributes,
-  \_In\_opt\_    LPSECURITY\_ATTRIBUTES lpThreadAttributes,
-  \_In\_        BOOL                  bInheritHandles,
-  \_In\_        DWORD                 dwCreationFlags,
-  \_In\_opt\_    LPVOID                lpEnvironment,
-  \_In\_opt\_    LPCTSTR               lpCurrentDirectory,
-  \_In\_        LPSTARTUPINFO         lpStartupInfo,
-  \_Out\_       LPPROCESS\_INFORMATION lpProcessInformation
+  _In_opt_      LPCTSTR               lpApplicationName,
+  _Inout_opt_ LPTSTR                lpCommandLine,
+  _In_opt_      LPSECURITY_ATTRIBUTES lpProcessAttributes,
+  _In_opt_      LPSECURITY_ATTRIBUTES lpThreadAttributes,
+  _In_            BOOL                  bInheritHandles,
+  _In_            DWORD                 dwCreationFlags,
+  _In_opt_     LPVOID                lpEnvironment,
+  _In_opt_     LPCTSTR               lpCurrentDirectory,
+  _In_           LPSTARTUPINFO         lpStartupInfo,
+  _Out_         LPPROCESS_INFORMATION lpProcessInformation
 );
 \end{lstlisting}
 
 The \emph{fork} system call, on the other hand, does not take any arguments. Another important difference in process creation between these two systems is that the \emph{CreateProcess} call returns a \emph{bool} that is set to true if the process and subsequent thread are successful in creation, and false otherwise. \emph{Fork()}, on the other hand, returns an integer value that, if the process is successfully created, corresponds to the process's ID. Thus, we can see that with Windows, the act of specifying a process's attributes are quite important, while with Linux, the programmer's awareness of the process hierarchy is emphasized, since they can easily store and access process IDs in order to identify which process is running at a given time. On the other hand, Windows does not maintain the relationships between parent and child processes \cite{har04}. \cite{har04} goes on to claim that the reason behind this lack of interest in parent and child process relationships in Windows is because the act of forking in Linux is, in practice, dreadful when creating multithreaded programs. This is because the fork system call makes it so that the newly created child process is an exact replica of the parent process, retaining precise copies of the parent's threads and synchronization objects, making management between multiprocessors a nightmare. 
 \paragraph{Process Identification} In Windows, processes can be identified by both handles AND process IDs, while in Linux, we can only identify a process by its ID, which we can access using the \emph{getpid()} system call. With Windows, we can get a process handle by using the \emph{OpenProcess} function, and get a process ID by using the \emph{GetCurrentProcessId}. The \emph{OpenProcess} function allows for you to enumerate that handle's access rights and contains the ability to set whether or not the process is inheritable. I think Windows includes this handle as well as the process ID in a strategy to make security a priority in the act of process management, since you can specify what a process can access through its handle. In this sense, the identity of a Windows process is a much more complex entity, since it can include a large quantity of information. In fact, both the ID and the handle of a process is stored in a \emph{PROCESS\_INFORMATION} structure. Access control information of processese in Linux can be found in a process's \emph{process credentials}. Additionally, Windows does not provide a function to discover a process's parent's ID, while Linux processes maintain records of their parents' process IDs \cite{ker10}. Again, this is likely because of Windows' different methods of handling process hierarchies. 
-\paragraph{Process Termination}
-In Linux, normal process termination occurs with the \emph{\_exit()} system call \cite{ker10}, while in Windows the function responsible for normal process termination is \emph{ExitProcess}.  The act of process termination is reflected upon system resources differently across these two operating systems. When a process terminates either normally or abnormally in Linux, synchronization resources such as semaphores or memory locks are closed and unlocked, respectively. Like \emph{har04} claims, with Windows, it is essential that resources shared across processes like semaphores and memory locks are deliberately freed by the programmer in the act of termination. That is, Windows offers less garbage collection in process termination when it comes to synchronization resources than Linux does. 
+\paragraph{Process Termination/Exiting}
+In Linux, normal process termination occurs with the \emph{\_exit()} system call \cite{ker10}, while in Windows the function responsible for normal process termination is \emph{ExitProcess}.  The act of process termination is reflected upon system resources differently across these two operating systems. When a process terminates either normally or abnormally in Linux, synchronization resources such as semaphores or memory locks are closed and unlocked, respectively. Like \cite{har04} claims, with Windows, it is essential that resources shared across processes like semaphores and memory locks are deliberately freed by the programmer in the act of termination. That is, Windows offers less garbage collection in process termination when it comes to synchronization resources than Linux does. 
+
 \subsection{Threads}
 \subsubsection{Similarities to Linux}
-(1)Similarities in what resources each thread in a process shares, such as:
-(2)\cite{har04} claims POSIX Pthreads, which are used prominently in the Linux operating system, provides similar features to Windows threads, but Windows allows for a "broader collection of functions". SUCH AS:
-(3) Similar enough with POSIX Pthreads in how threads are managed that there are open source Pthreads libraries available for Windows system developers.
+\paragraph{Thread creation}
+Creating a thread complete with stack size specification and security attributes can be done in one complex function call in Windows, but Linux can specify the exact same things for a thread as Windows can, just through the use of four functions, namely:
+\begin{lstlisting}
+pthread_create
+pthread_attr_init
+pthread_attr_setstacksize
+pthread_attr_destroy
+\end{lstlisting}
+\cite{har04} claims POSIX Pthreads, which are used prominently in the Linux operating system, provides similar features to Windows threads, but Windows allows for a "broader collection of functions". In fact, Windows threads are similar enough with POSIX Pthreads in how threads are managed that there are open source Pthreads libraries available for Windows system developers.
+\paragraph{Thread synchronization}
+Threads in both Windows and Linux share resources with other threads. Additionally, both Windows and Linux use semaphores and mutexes to restrict access to shared resources between threads.
+\paragraph{Thread termination/exiting}
+Normal thread exiting can be done in a single function in both Windows and Linux. The function for this in Windows is \emph{ThreadExit}, and in Linux it is \emph{pthread_exit}.
+
 \subsubsection{Differences from Linux}
+\paragraph{Thread creation}
+In Linux, threads are not built-in and must be implemented using the POSIX Pthreads library. Windows, on the other hand, has built-in threads which serve as the kernel's basic unit of scheduling. Several different parameters present in thread creation function for Windows than Linux, just like how a Windows process requires more parameters in its creation. This is because Windows intends for you to specify more about process and thread functionality during the genesis of processes and threads than Linux does. In Windows, threads are crucially important. The thread creation function signature for Windows is as follows:
+\begin{lstlisting}
+HANDLE WINAPI CreateThread(
+  _In_opt_   LPSECURITY_ATTRIBUTES     lpThreadAttributes,
+  _In_         SIZE_T                                  dwStackSize,
+  _In_         LPTHREAD_START_ROUTINE lpStartAddress,
+  _In_opt_   LPVOID                                 lpParameter,
+  _In_         DWORD                                 dwCreationFlags,
+  _Out_opt_ LPDWORD                              lpThreadId
+);
+\end{lstlisting}
+Meanwhile, to create a thread in Linux, we simply use the \emph{pthread_create} function, which takes only four parameters. Again, we can see through this example that Windows emphasizes the programmer's specification of attributes such as access control in the creation of threads and processes.
+\paragraph{Thread synchronization}
+An important distinction in Windows vs. Linux thread management is the inclusion of \emph{events} in Windows as a method of thread synchronization. Events are objects that are used to notify waiting threads when an event, like I/O operations on files, are completed \cite{rus121}. Windows also utilizes \emph{critical sections} while Linux implements \emph{conditional variables}, like \emph{emph{pthread_cond_wait}. 
+
 \subsection{CPU Scheduling}  
 \subsubsection{Similarities to Linux}
+\paragraph{Timeslice properties}
+Both Windows and Linux use timeslices, or quantums, of about 10 milliseconds to in the hundreds of milliseconds (though Windows has traditionally lower timeslices, likely in an effort to favor higher priority threads, which is discussed in a later section). Both operating systems also institute \emph{reentrant} timeslices, which means that if a thread is interrupted during its execution, then it is returned with what remains of its timeslice after interruption, rather than a fresh timeslice.
+\paragraph{Base priorities}
+Both operating systems assign a \emph{base priority} to a process, that is, a priority calculated according to a scheduling algorithm. Although Windows and Linux both favor different priorities and utilize different scheduling algorithms, the idea of attaching an initial priority subject to change to a process is universal across them both.
 \subsubsection{Differences from Linux}
+\paragraph{Scheduling Classes} 
+In Windows, there are two scheduling classes, \emph{real time} and \emph{dynamic}. Windows favors threads that have a higher priority value (e.g. 32 rather than 0) attached to it \cite{rus122}. Linux, on the other hand, uses three scheduling classes, \emph{normal}, \emph{Fixed Round Robin}, and \emph{Fixed FIFO}, though the default scheduling class is the \emph{Fixed Round Robin} \cite{ker10}. Linux favors threads that have a lower priority value attached to it in an effort to institute a level of class equality in their scheduling methodology.
+
 \section{FreeBSD}
+FreeBSD is a UNIX-like operating system developed by Berkeley 
 \subsection{Processes}
 \subsubsection{Similarities to Linux}
+Like Linux and Windows, FreeBSD processes contains information that an operating system needs to have in order to handle program execution, such as process ID, registers, stack, heap, etc. 
 \subsubsection{Differences from Linux}
 \subsection{Threads}
 \subsubsection{Similarities to Linux}
