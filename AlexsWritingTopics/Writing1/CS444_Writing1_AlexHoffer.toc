@@ -3,6 +3,8 @@
 \contentsline {subsubsection}{\numberline {1.1.1}Similarities to Linux}{2}{subsubsection.1.1.1}
 \contentsline {subsubsection}{\numberline {1.1.2}Differences from Linux}{2}{subsubsection.1.1.2}
 \contentsline {paragraph}{Process Creation}{2}{section*.2}
+\contentsline {paragraph}{Process Identification}{2}{section*.3}
+\contentsline {paragraph}{Process Termination}{3}{section*.4}
 \contentsline {subsection}{\numberline {1.2}Threads}{3}{subsection.1.2}
 \contentsline {subsubsection}{\numberline {1.2.1}Similarities to Linux}{3}{subsubsection.1.2.1}
 \contentsline {subsubsection}{\numberline {1.2.2}Differences from Linux}{3}{subsubsection.1.2.2}
