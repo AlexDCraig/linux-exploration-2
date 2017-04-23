@@ -2,20 +2,20 @@
 \contentsline {subsection}{\numberline {1.1}Windows}{2}{subsection.1.1}
 \contentsline {subsubsection}{\numberline {1.1.1}Similarities to Linux}{2}{subsubsection.1.1.1}
 \contentsline {subsubsection}{\numberline {1.1.2}Differences from Linux}{2}{subsubsection.1.1.2}
-\contentsline {subsection}{\numberline {1.2}FreeBSD}{2}{subsection.1.2}
-\contentsline {subsubsection}{\numberline {1.2.1}Similarities to Linux}{2}{subsubsection.1.2.1}
-\contentsline {subsubsection}{\numberline {1.2.2}Differences from Linux}{2}{subsubsection.1.2.2}
-\contentsline {section}{\numberline {2}Threads}{2}{section.2}
-\contentsline {subsection}{\numberline {2.1}Windows}{2}{subsection.2.1}
-\contentsline {subsubsection}{\numberline {2.1.1}Similarities to Linux}{2}{subsubsection.2.1.1}
-\contentsline {subsubsection}{\numberline {2.1.2}Differences from Linux}{2}{subsubsection.2.1.2}
-\contentsline {subsection}{\numberline {2.2}FreeBSD}{2}{subsection.2.2}
-\contentsline {subsubsection}{\numberline {2.2.1}Similarities to Linux}{2}{subsubsection.2.2.1}
-\contentsline {subsubsection}{\numberline {2.2.2}Differences from Linux}{2}{subsubsection.2.2.2}
-\contentsline {section}{\numberline {3}CPU Scheduling}{2}{section.3}
-\contentsline {subsection}{\numberline {3.1}Windows}{2}{subsection.3.1}
-\contentsline {subsubsection}{\numberline {3.1.1}Similarities to Linux}{2}{subsubsection.3.1.1}
-\contentsline {subsubsection}{\numberline {3.1.2}Differences from Linux}{2}{subsubsection.3.1.2}
-\contentsline {subsection}{\numberline {3.2}FreeBSD}{2}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Similarities to Linux}{2}{subsubsection.3.2.1}
-\contentsline {subsubsection}{\numberline {3.2.2}Differences from Linux}{2}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {1.2}FreeBSD}{3}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}Similarities to Linux}{3}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}Differences from Linux}{3}{subsubsection.1.2.2}
+\contentsline {section}{\numberline {2}Threads}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Windows}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Similarities to Linux}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Differences from Linux}{3}{subsubsection.2.1.2}
+\contentsline {subsection}{\numberline {2.2}FreeBSD}{3}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Similarities to Linux}{3}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Differences from Linux}{3}{subsubsection.2.2.2}
+\contentsline {section}{\numberline {3}CPU Scheduling}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Windows}{3}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Similarities to Linux}{3}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Differences from Linux}{3}{subsubsection.3.1.2}
+\contentsline {subsection}{\numberline {3.2}FreeBSD}{3}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Similarities to Linux}{3}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Differences from Linux}{3}{subsubsection.3.2.2}

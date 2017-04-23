@@ -12,6 +12,7 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{listings}
+\lstset{language=C}
 \usepackage{cite}
 
 \usepackage{balance}
@@ -92,15 +93,22 @@
 
 \newpage
 
+
+
 \section{Processes}
 \cite{rus122} \cite{rus121} 
 \cite{mck15} \cite{ker10} \cite{har04}
 \subsection{Windows}
-
+The Windows operating system has many similarities and differences to Linux, and
+ since it is proprietary software, it is not prone to the robust open source development that Linux is famous for. Nevertheless, Windows systems programming is well documented, and with the help of several resources we can get a good picture of how Windows manages processes, which are the fundamental building blocks of any operating system. 
 \subsubsection{Similarities to Linux}
-
+(1)Each process contains one or more threads.
+(2)Similarities in what resources a process inherits, such as:
+(3) Use of the C programming language, including struct-oriented design patterns
 \subsubsection{Differences from Linux}
-
+(1) PROCESS CREATION: To create a new process in Windows, we must execute a \emph{CreateProcess} call. To do this same function in Linux, we traditionally use a \emph{fork}. The differences between these calls is indicative of how the two operating systems handle the parent and child relationship inherent in a process hierarchy. Specifically, \emph{CreateProcess} takes 10 arguments, including (but not limited to) desired security attributes, creation flags, and environment. The \emph{fork} system call, on the other hand, does not take any arguments. Another important difference in process creation between these two systems is that the \emph{CreateProcess} call returns a \emph{bool} that is set to true if the process and subsequent thread are successful in creation, and false otherwise. \emph{Fork()}, on the other hand, returns an integer value that, if the process is successfully created, corresponds to the process's ID. Thus, we can see that with Windows, the act of specifying a process's attributes are quite important, while with Linux, the programmer's awareness of the process hierarchy is emphasized, since they can easily store and access process IDs in order to identify which process is running at a given time. On the other hand, Windows does not maintain the relationships between parent and child processes \cite{har04}. \cite{har04} goes on to claim that the reason behind this lack of interest in parent and child process relationships in Windows is because the act of forking in Linux is, in practice, dreadful when creating multithreaded programs. This is because the fork system call makes it so that the newly created child process is an exact replica of the parent process, retaining precise copies of the parent's threads and synchronization objects, making management between multiprocessors a nightmare. 
+(2) PROCESS IDENTIFICATION: In Windows, processes can be identified by both handles AND process IDs, while in Linux, we can only identify a process by its ID, which we can access using the \emph{getpid()} system call. With Windows, we can get a process handle by using the \emph{OpenProcess} function, and get a process ID by using the \emph{GetCurrentProcessId}. The \emph{OpenProcess} function allows for you to enumerate that handle's access rights and contains the ability to set whether or not the process is inheritable. I think Windows includes this handle as well as the process ID in a strategy to make security a priority in the act of process management, since you can specify what a process can access through its handle. In this sense, the identity of a Windows process is a much more complex entity, since it can include a large quantity of information.  
+(3) PROCESS TERMINATION: 
 \subsection{FreeBSD}
 
 \subsubsection{Similarities to Linux}
@@ -112,6 +120,9 @@
 \subsection{Windows}
 
 \subsubsection{Similarities to Linux}
+(1)Similarities in what resources each thread in a process shares, such as:
+(2)\cite{har04} claims POSIX Pthreads, which are used prominently in the Linux operating system, provides similar features to Windows threads, but Windows allows for a "broader collection of functions". SUCH AS:
+(3) Similar enough with POSIX Pthreads in how threads are managed that there are open source Pthreads libraries available for Windows system developers.
 
 \subsubsection{Differences from Linux}
 
