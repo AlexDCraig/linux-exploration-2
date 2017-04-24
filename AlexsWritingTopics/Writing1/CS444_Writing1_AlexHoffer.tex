@@ -170,20 +170,41 @@ Both Windows and Linux use timeslices, or quantums, of about 10 milliseconds to 
 Both operating systems assign a \emph{base priority} to a process, that is, a priority calculated according to a scheduling algorithm. Although Windows and Linux both favor different priorities and utilize different scheduling algorithms, the idea of attaching an initial priority subject to change to a process is universal across them both.
 \subsubsection{Differences from Linux}
 \paragraph{Scheduling Classes} 
-In Windows, there are two scheduling classes, \emph{real time} and \emph{dynamic}. Windows favors threads that have a higher priority value (e.g. 32 rather than 0) attached to it \cite{rus122}. Linux, on the other hand, uses three scheduling classes, \emph{normal}, \emph{Fixed Round Robin}, and \emph{Fixed FIFO}, though the default scheduling class is the \emph{Fixed Round Robin} \cite{ker10}. Linux favors threads that have a lower priority value attached to it in an effort to institute a level of class equality in their scheduling methodology.
+In Windows, there are two scheduling classes, \emph{real time} and \emph{dynamic}. Windows favors threads that have a higher priority value (e.g. 32 rather than 0) attached to it \cite{rus122}. Linux, on the other hand, uses three scheduling classes, \emph{normal}, \emph{Fixed Round Robin}, and \emph{Fixed FIFO}, though the default scheduling class is the \emph{Fixed Round Robin}, or the \emph{Completely Fair Scheduler (CFS)} \cite{ker10}. Linux favors threads that have a lower priority value attached to it in an effort to institute a level of class equality in their scheduling methodology.
 
 \section{FreeBSD}
-FreeBSD is a UNIX-like operating system developed by Berkeley 
 \subsection{Processes}
 \subsubsection{Similarities to Linux}
-Like Linux and Windows, FreeBSD processes contains information that an operating system needs to have in order to handle program execution, such as process ID, registers, stack, heap, etc. 
+\paragraph{UNIX-like operating systems}
+Since FreeBSD is a UNIX-like operating system, FreeBSD and Linux are very similar in how they handle processes and threads. First and foremost, like Linux and Windows, FreeBSD processes contain information that an operating system needs to have in order to handle program execution, such as process ID, registers, stack, heap, etc. 
+\paragraph{Preservation of the Parent-Child Relationship} 
+Like Linux, FreeBSD uses a \emph{fork()} system call to create a new child process. This call returns the pid of the new process, and that new process can retain the ID of its parent using a function call \cite{mck15}. In this way, FreeBSD and Linux share a common interest in preserving an easy and convenient way for a developer to understand the process hierarchy of a program's execution. Thus, FreeBSD does not contain the \emph{handles} or complex forking procedure that Windows utilizes. Like both Windows and Linux, a programmer can get the running process's ID with a \emph{getpid()} function call. Unlike Windows but like Linux, a child process is the exact duplicate of the context of its parent \cite{mck15}, which, as stated previously, is a concern in the context of multiprocessing.
 \subsubsection{Differences from Linux}
+\paragraph{No considerable differences} There are no significant differences in the way processes themselves are created, monitored, or destroyed between FreeBSD and Linux. There are, however, differences in how processes are chosen for CPU time (outlined in the \emph{CPU Scheduling} section of this paper).
 \subsection{Threads}
 \subsubsection{Similarities to Linux}
+Like Linux, FreeBSD is POSIX-compliant, meaning threads can be managed using the Pthreads library. This means that the following sample of two fundamental thread functions are the same between FreeBSD and Linux:
+\begin{lstlisting}
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void*(*start_routine)(void *), void *arg)
+\end{lstlisting}
+\begin{lstlisting}
+int pthread_join(pthread_t thread, void **value_ptr)
+\end{lstlisting}
+It follows that since FreeBSD utilizes the Pthreads library, nearly all of its thread management is identical to that of Linux: there are not many major differences between thread creation, destruction, and synchronization between the two operating systems.
 \subsubsection{Differences from Linux}
+\paragraph{No considerable differences} Such as with processes, the emergence of both FreeBSD and Linux from the UNIX operating system led to few discernible differences between the two in managing threads. 
 \subsection{CPU Scheduling}
 \subsubsection{Similarities to Linux}
+The most profound differences between the two UNIX-like operating systems can be found in the way they allocate CPU time to different processes. 
+\paragraph{Nice values and similar priority model} Like Linux, FreeBSD sets large \emph{nice values} (numbers that correspond to job priority) such as the range between 0 to 20 as being of low priority, while small nice values such as the range between -20 - 0 are set for higher priority for execution \cite{boe01}. 
+\paragraph{Getting, setting priority} Both Linux and FreeBSD programmers can include the \emph{sys.resource.h} file in order to use functions that can get the nice value of a specified process or set the nice value of a specified process. These functions are included below, courtesy of \cite{ker10}. 
+\begin{lstlisting}
+int getpriority(int which, id_t who);
+int setpriority(int which, id_t who, int prio);
+\end{lstlisting}
 \subsubsection{Differences from Linux}
+\paragraph{Default schedulers}The default scheduler for the FreeBSD is the ULE, while the default scheduler for Linux is the CFS. The ULE is built on low-level and high-level scheduling subsystems. The low-level one is frequently running and quickly grabs the next thread to run based off what the highest prioritied task is in the system's \emph{run queues} \cite{mck15}. Meanwhile, CFS does not use run queues to choose the next process to run, instead this scheduling strategy computes the next process based on round-robin time-sharing, as described in the section on Linux vs. Windows for scheduling.
+
 
 \newpage
 \bibliography{CS444_Writing1_AlexHoffer}{}
