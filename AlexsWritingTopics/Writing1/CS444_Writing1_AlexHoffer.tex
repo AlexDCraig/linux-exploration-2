@@ -189,9 +189,9 @@ Like Linux, FreeBSD uses a \emph{fork()} system call to create a new child proce
 \subsubsection{Similarities to Linux}
 Like Linux, FreeBSD is POSIX-compliant, meaning threads can be managed using the Pthreads library. This means that the following sample of two fundamental thread functions are the same between FreeBSD and Linux:
 \begin{lstlisting}
-int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void*(*start_routine)(void *), void *arg)
-\end{lstlisting}
-\begin{lstlisting}
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr, 
+	void*(*start_routine)(void *), void *arg)
+
 int pthread_join(pthread_t thread, void **value_ptr)
 \end{lstlisting}
 It follows that since FreeBSD utilizes the Pthreads library, nearly all of its thread management is identical to that of Linux: there are not many major differences between thread creation, destruction, and synchronization between the two operating systems.

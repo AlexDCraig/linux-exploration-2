@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  23 APR 2017 22:03
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  23 APR 2017 22:05
 entering extended mode
  %&-line parsing enabled.
 **CS444_Writing1_AlexHoffer
@@ -481,14 +481,8 @@ Overfull \hbox (1.64514pt too wide) in paragraph at lines 148--149
 in-dows and Linux share re-sources with other threads.
  []
 
-[4]
-Overfull \hbox (240.4787pt too wide) in paragraph at lines 192--193
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][] 
- []
-
-[5] [6] (./CS444_Writing1_AlexHoffer.bbl) [7] (./CS444_Writing1_AlexHoffer.aux)
- ) 
+[4] [5] [6] (./CS444_Writing1_AlexHoffer.bbl) [7]
+(./CS444_Writing1_AlexHoffer.aux) ) 
 Here is how much of TeX's memory you used:
  8310 strings out of 256215
  107621 string characters out of 1917023
@@ -496,6 +490,6 @@ Here is how much of TeX's memory you used:
  11484 multiletter control sequences out of 10000+200000
  7371 words of font info for 29 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 30i,6n,49p,1327b,1078s stack positions out of 5000i,500n,6000p,200000b,15000s
+ 30i,7n,49p,1327b,1078s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writing1_AlexHoffer.dvi (8 pages, 55024 bytes).
+Output written on CS444_Writing1_AlexHoffer.dvi (8 pages, 55132 bytes).
