@@ -2,46 +2,44 @@ This is BibTeX, Version 0.99c (Web2C 7.5.6)
 The top-level auxiliary file: CS444_Writing1_AlexHoffer.aux
 The style file: plain.bst
 Database file #1: CS444_Writing1_AlexHoffer.bib
-Warning--I didn't find a database entry for "boe01"
-You've used 5 entries,
+You've used 6 entries,
             2118 wiz_defined-function locations,
-            523 strings with 4633 characters,
-and the built_in function-call counts, 1312 in all, are:
-= -- 113
-> -- 68
+            527 strings with 4722 characters,
+and the built_in function-call counts, 1545 in all, are:
+= -- 133
+> -- 81
 < -- 0
-+ -- 29
-- -- 22
-* -- 72
-:= -- 237
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 22
++ -- 34
+- -- 26
+* -- 82
+:= -- 275
+add.period$ -- 17
+call.type$ -- 6
+change.case$ -- 27
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 60
-empty$ -- 111
-format.name$ -- 22
-if$ -- 270
+cite$ -- 6
+duplicate$ -- 67
+empty$ -- 133
+format.name$ -- 26
+if$ -- 320
 int.to.chr$ -- 0
-int.to.str$ -- 5
+int.to.str$ -- 6
 missing$ -- 10
-newline$ -- 28
-num.names$ -- 10
-pop$ -- 44
+newline$ -- 32
+num.names$ -- 12
+pop$ -- 54
 preamble$ -- 1
-purify$ -- 21
+purify$ -- 25
 quote$ -- 0
-skip$ -- 30
+skip$ -- 39
 stack$ -- 0
-substring$ -- 27
-swap$ -- 5
+substring$ -- 32
+swap$ -- 6
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 10
+type$ -- 14
 warning$ -- 0
-while$ -- 10
-width$ -- 6
-write$ -- 54
-(There was 1 warning)
+while$ -- 12
+width$ -- 7
+write$ -- 62
