@@ -1,4 +1,13 @@
-/* C Implementation of the Dining Philosophers Problem by Alex Hoffer */
+/* C Implementation of the Dining Philosophers Problem by Alex Hoffer 
+ * The philosophers' names courtesy of Marcel Proust's "Remembrance of Things Past".
+ * 
+ * Algorithm chosen to implement as solution: Dijkstra's Resource Hierarchy
+ * The idea is that we assign partial order to our forks and that we must
+ * request these forks in order. All philosophers request their lowest 
+ * numbered fork except for the fifth philosopher that uses the highest 
+ * and lowest numbered forks, leaving this fifth philosopher
+ * susceptible to not being able to eat as often as the others. 
+*/
 
 #include <stdio.h> // for randomization
 #include <pthread.h> // for threads, locking, etc.
@@ -12,14 +21,11 @@
 // A shared resource that acts as a semaphore.
 bool forks[5] = {true, true, true, true, true};
 
-// A mutex provided for each philosopher. When they are eating, lock their left and right fork.
+// A mutex provided for each philosopher. These lock global resources so that the relevant philosopher can safely check and modify the forks[] semaphore.
 pthread_mutex_t forkLocks[5];
 
-// What will hold our pthread IDs
+// What will hold our created pthread IDs that correspond to each philosopher
 pthread_t philosopherThreadID[5];
-
-// to pass to pthread_join
-void* returnValue;
 
 // ***
 // Our data structure that corresponds to the philosophers who will be executing threads
