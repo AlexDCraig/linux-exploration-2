@@ -1,4 +1,4 @@
-whatever: whatever.c
-	gcc whatever.c -o whatever -lpthread
+diningPhilosophers: diningPhilosophers.c
+	gcc diningPhilosophers.c -o diningPhilosophers -lpthread
 clean: 
-	rm -f *.o whatever
+	rm -f *.o diningPhilosophers
