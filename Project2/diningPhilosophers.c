@@ -97,7 +97,8 @@ void put_forks(char* philName, int philPosition, int rightForkPos)
 
 	printf("Name: %s. Seat: %d. Status: FINISHED EATING, putting left fork (position %d), right fork (position %d) down.\n", philName, philPosition, philPosition, rightForkPos); 
 }
-	
+
+// Try and grab the forks to the left and right of the philosopher	
 void get_forks(struct philosopher* phil, char* philName, int philPosition)
 {
 	printf("Name: %s. Seat: %d. Status: HUNGRY. Forks: Checking left fork, position %d.\n", philName, philPosition, philPosition);
@@ -165,7 +166,9 @@ void get_forks(struct philosopher* phil, char* philName, int philPosition)
 }
 
 // ***
-// The function we will call from pthread_create. We must 
+// The function we will call from pthread_create. 
+// Each executing thread (AKA philosopher) must think, then attempt to get forks. If they get both forks, then they eat
+// and then put them down. 
 
 void* lifeAsAPhilosopher(void* arg)
 {
@@ -208,7 +211,7 @@ int main()
 
 	int r = 0;
 	
-	// Wait for each thread to finish
+	// Wait for each thread to finish, since there's an infinite loop within each thread this will just cause each thread to run forever
 	for (r; r < 5; r++)
 		pthread_join(philosopherThreadID[r], NULL);
 
