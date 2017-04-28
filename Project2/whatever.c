@@ -57,18 +57,20 @@ int getRightForkPosition(int position)
 }
 
 // eat a random time between 2-9 secs
-void eat()
+void eat(char* name, int leftForkPos, int rightForkPos)
 {
 	int random = (rand() % 8) + 2;
 	int randomTime = random * 1000000;
+	printf("Philosopher: %s. Seat position: %d. Status: EATING for %d seconds. Forks: HAS Left fork, position: %d. HAS Right fork, position: %d.\n", name, leftForkPos, random, leftForkPos, rightForkPos);
 	usleep(randomTime);
 }
 
 // think a random time between 1-20 secs
-void think()
+void think(char* name, int pos)
 {
 	int random = (rand() % 20) + 1;
 	int randomTime = random * 1000000; // 1000000 microseconds is 1 second, usleep takes microseconds as input
+	printf("Philosopher: %s. Seat position: %d. Status: THINKING for %d seconds. Forks: HAS no forks.\n", name, pos, random);
 	usleep(randomTime);
 }
 
@@ -83,9 +85,9 @@ void* lifeAsAPhilosopher(void* arg)
 	
 	while(1)
 	{
-		think();
+		think(philName, philPosition);
 
-		printf("%s is hungry and checking their left fork.\n", philName);
+		printf("Philosopher: %s. Seat position: %d. Status: HUNGRY. Forks: Checking left fork, position %d.\n", philName, philPosition, philPosition);
 		
 		// Tentatively lock the philosopher's left fork in preparation for a feast.
 		// This'll fail if it's already locked.
@@ -94,7 +96,7 @@ void* lifeAsAPhilosopher(void* arg)
 		// Check the left fork using the shared bool resource that is locked from the statement above.
 		if (isForkAvailable(philPosition) == true) 
 		{
-			printf("%s now has the fork to their left.\n", philName);
+			printf("Philosopher: %s. Seat position: %d. Status: HUNGRY. Forks: HAS left fork, position %d.\n", philName, philPosition, philPosition);
 			
 			// That fork is now unavailable. Alert the semaphore.
 			forks[philPosition] = false;
@@ -111,7 +113,7 @@ void* lifeAsAPhilosopher(void* arg)
 
 			pthread_mutex_lock(&forkLocks[rightForkPos]);
 
-			printf("%s is hungry and checking their right fork.\n", philName);
+			printf("Philosopher: %s. Seat position: %d. Status: HUNGRY. Forks: HAS left fork, position %d, checking on right fork, position: %d.\n", philName, philPosition, philPosition, rightForkPos);
 			
 			// his right fork is free
 			if (isForkAvailable(rightForkPos) == true) 
@@ -120,9 +122,7 @@ void* lifeAsAPhilosopher(void* arg)
 				
 				pthread_mutex_unlock(&forkLocks[rightForkPos]);
 
-				printf("%s is eating now that both of their forks are free.\n", philName);
-
-				eat();
+				eat(philName, philPosition, rightForkPos);
 		
 				// Lock the forks
 				pthread_mutex_lock(&forkLocks[philPosition]);
@@ -140,7 +140,7 @@ void* lifeAsAPhilosopher(void* arg)
 			// The left fork is free, but the right fork is not. So, give up: set down the left fork, adjust the semaphore, and try again in a bit.
 			else			
 			{
-				printf("%s has the left fork, but can't get their grubby hands on the right fork. They temporarily relinquish both forks and patiently wait.\n");
+				printf("Philosopher: %s. Seat position: %d. Status: HUNGRY. Forks: Has left fork, position %d. Can't have right fork, position %d. GIVING UP LEFT FORK.\n", philName, philPosition, philPosition, rightForkPos);
 				// unlock his right fork
 				pthread_mutex_unlock(&forkLocks[rightForkPos]);
 
@@ -155,7 +155,7 @@ void* lifeAsAPhilosopher(void* arg)
 		// because we've done nothing to it.
 		else
 		{
-			printf("%s cannot acquire the fork to his left. The algorithm states he must wait.\n");
+			printf("Philosopher: %s. Seat position: %d. Status: HUNGRY. Forks: Cannot have left fork, position %d, so won't check on his right fork, position %d.\n", philName, philPosition, philPosition, getRightForkPosition(philPosition));
 			pthread_mutex_unlock(&forkLocks[philPosition]);
 		}		 
 
