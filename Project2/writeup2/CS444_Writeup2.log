@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 MAY 2017 22:20
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 MAY 2017 22:47
 entering extended mode
  %&-line parsing enabled.
 **CS444_Writeup2
@@ -494,12 +494,12 @@ LaTeX Info: Redefining \pageref on input line 66.
  [1
 
 ] (./CS444_Writeup2.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 5.
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 5.
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
@@ -507,53 +507,22 @@ File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 \tf@toc=\write6
 \openout6 = `CS444_Writeup2.toc'.
 
- [1]
-Overfull \hbox (910.39368pt too wide) in paragraph at lines 123--124
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-[][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (130.38574pt too wide) in paragraph at lines 130--131
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
- []
-
-
-Overfull \hbox (466.38916pt too wide) in paragraph at lines 130--131
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (4.38446pt too wide) in paragraph at lines 145--146
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 159.
-
- (/usr/share/texmf/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 159.
- [3] [4]
+ [1] [2]
 \vh@hstfile=\write7
  (./CS444_Writeup2.ver)
-(./CS444_Writeup2.ver) (./CS444_Writeup2.ver) [5
+(./CS444_Writeup2.ver) (./CS444_Writeup2.ver) [3
 \openout3 = `CS444_Writeup2.ver'.
 
 \openout7 = `CS444_Writeup2.hst'.
 
-] [6] (./CS444_Writeup2.aux) ) 
+] (./CS444_Writeup2.aux) ) 
 Here is how much of TeX's memory you used:
- 8324 strings out of 256215
- 107214 string characters out of 1917023
- 212826 words of memory out of 1500000
- 11481 multiletter control sequences out of 10000+200000
- 7203 words of font info for 28 fonts, out of 1200000 for 2000
+ 8041 strings out of 256215
+ 104917 string characters out of 1917023
+ 196708 words of memory out of 1500000
+ 11202 multiletter control sequences out of 10000+200000
+ 6857 words of font info for 27 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 35i,7n,37p,1682b,993s stack positions out of 5000i,500n,6000p,200000b,15000s
+ 35i,6n,37p,1318b,371s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writeup2.dvi (7 pages, 42272 bytes).
+Output written on CS444_Writeup2.dvi (4 pages, 19012 bytes).
