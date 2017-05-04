@@ -2,10 +2,10 @@
 \contentsline {section}{\numberline {2}What we think the main point of this assignment is}{2}{section.2}
 \contentsline {section}{\numberline {3}How we personally approached the problems}{2}{section.3}
 \contentsline {subsection}{\numberline {3.1}Concurrency}{2}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}LOOK Scheduler}{2}{subsection.3.2}
-\contentsline {section}{\numberline {4}How we ensured solution was correct}{2}{section.4}
-\contentsline {subsection}{\numberline {4.1}Concurrency}{2}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}LOOK Scheduler}{3}{subsection.4.2}
+\contentsline {subsection}{\numberline {3.2}C-LOOK Scheduler}{2}{subsection.3.2}
+\contentsline {section}{\numberline {4}How we ensured solution was correct}{3}{section.4}
+\contentsline {subsection}{\numberline {4.1}Concurrency}{3}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}C-LOOK Scheduler}{3}{subsection.4.2}
 \contentsline {section}{\numberline {5}What we learned}{3}{section.5}
 \contentsline {section}{\numberline {6}Version control log}{3}{section.6}
 \contentsline {section}{\numberline {7}Work log}{3}{section.7}
