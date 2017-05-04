@@ -23,6 +23,7 @@ static void sstf_merged_requests(struct request_queue *q, struct request *rq,
 static int sstf_dispatch(struct request_queue *q, int force)
 {
 	struct sstf_data *nd = q->elevator->elevator_data;
+	printk("CLOOK algorithm has reached dispatch function\n");
 
 	if (!list_empty(&nd->queue)) {
 		struct request *rq;
@@ -39,12 +40,14 @@ static int sstf_dispatch(struct request_queue *q, int force)
 		if(rq_data_dir(rq) == READ)
 		{
             direction = 'R';
+		printk("Data is being read\n");
 		}
 		else
 		{
             direction = 'W';
+		printk("Data is being written\n");
 		}
-		printk("[SSTF] dsp %c %lu\n", direction, blk_rq_pos(rq));
+		printk("[SSTF] Dispatching. Direction:  %c Sector: %lu\n", direction, blk_rq_pos(rq));
 
 		return 1;
 	}
