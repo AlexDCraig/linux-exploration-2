@@ -1,7 +1,7 @@
-diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/Kconfig.iosched /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/Kconfig.iosched
---- /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/Kconfig.iosched	2017-05-03 13:41:05.780682048 -0700
-+++ /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/Kconfig.iosched	2017-05-03 20:37:01.701375449 -0700
-@@ -32,6 +32,12 @@ config IOSCHED_CFQ
+diff -Naur A2OldFiles/Kconfig.iosched A2NewFiles/Kconfig.iosched
+--- A2OldFiles/Kconfig.iosched	2017-05-04 19:22:59.417366605 -0700
++++ A2NewFiles/Kconfig.iosched	2017-05-04 19:15:28.853945197 -0700
+@@ -32,6 +32,12 @@
  
  	  This is the default I/O scheduler.
  
@@ -14,7 +14,7 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
  config CFQ_GROUP_IOSCHED
  	bool "CFQ Group Scheduling support"
  	depends on IOSCHED_CFQ && BLK_CGROUP
-@@ -55,6 +61,9 @@ choice
+@@ -55,6 +61,9 @@
  	config DEFAULT_NOOP
  		bool "No-op"
  
@@ -24,29 +24,29 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
  endchoice
  
  config DEFAULT_IOSCHED
-@@ -62,6 +71,7 @@ config DEFAULT_IOSCHED
+@@ -62,7 +71,7 @@
  	default "deadline" if DEFAULT_DEADLINE
  	default "cfq" if DEFAULT_CFQ
  	default "noop" if DEFAULT_NOOP
+-
 +	default "look" if DEFAULT_LOOK
  endmenu
  
  endif
-diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/Makefile /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/Makefile
---- /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/Makefile	2017-05-03 13:41:12.537793719 -0700
-+++ /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/Makefile	2017-05-03 20:37:08.429484121 -0700
-@@ -16,6 +16,8 @@ obj-$(CONFIG_BLK_DEV_THROTTLING)	+= blk-
+diff -Naur A2OldFiles/Makefile A2NewFiles/Makefile
+--- A2OldFiles/Makefile	2017-05-04 19:22:59.417366605 -0700
++++ A2NewFiles/Makefile	2017-05-04 19:15:28.853945197 -0700
+@@ -16,6 +16,7 @@
  obj-$(CONFIG_IOSCHED_NOOP)	+= noop-iosched.o
  obj-$(CONFIG_IOSCHED_DEADLINE)	+= deadline-iosched.o
  obj-$(CONFIG_IOSCHED_CFQ)	+= cfq-iosched.o
 +obj-$(CONFIG_IOSCHED_LOOK)	+= sstf-iosched.o
-+
+ 
  obj-$(CONFIG_BLOCK_COMPAT)	+= compat_ioctl.o
  obj-$(CONFIG_BLK_DEV_INTEGRITY)	+= blk-integrity.o
- obj-$(CONFIG_BLK_CMDLINE_PARSER)	+= cmdline-parser.o
-diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/noop-iosched.c /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/noop-iosched.c
---- /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/noop-iosched.c	2017-05-03 13:41:51.428436434 -0700
-+++ /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/noop-iosched.c	1969-12-31 16:00:00.000000000 -0800
+diff -Naur A2OldFiles/noop-iosched.c A2NewFiles/noop-iosched.c
+--- A2OldFiles/noop-iosched.c	2017-05-04 19:22:59.424366721 -0700
++++ A2NewFiles/noop-iosched.c	1969-12-31 16:00:00.000000000 -0800
 @@ -1,124 +0,0 @@
 -/*
 - * elevator noop
@@ -172,10 +172,10 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 -MODULE_AUTHOR("Jens Axboe");
 -MODULE_LICENSE("GPL");
 -MODULE_DESCRIPTION("No-op IO scheduler");
-diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/sstf-iosched.c /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/sstf-iosched.c
---- /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/sstf-iosched.c	1969-12-31 16:00:00.000000000 -0800
-+++ /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2/sstf-iosched.c	2017-05-03 20:36:37.817989708 -0700
-@@ -0,0 +1,181 @@
+diff -Naur A2OldFiles/sstf-iosched.c A2NewFiles/sstf-iosched.c
+--- A2OldFiles/sstf-iosched.c	1969-12-31 16:00:00.000000000 -0800
++++ A2NewFiles/sstf-iosched.c	2017-05-04 19:15:28.853945197 -0700
+@@ -0,0 +1,171 @@
 +/*
 + * elevator c-look
 + */
@@ -196,47 +196,41 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +				 struct request *next)
 +{
 +	list_del_init(&next->queuelist);
++	elv_dispatch_sort(q, next);
 +}
 +
 +static int sstf_dispatch(struct request_queue *q, int force)
 +{
-+	printk("In the DISPATCH for the SSTF algorithm.\n");
-+
++	// print whether data is being read or written
++	char direction;
 +	struct sstf_data *nd = q->elevator->elevator_data;
++	struct request *rq = NULL;
++	printk("CLOOK algorithm has reached dispatch function\n");
 +
-+	if (!list_empty(&nd->queue)) {
-+		struct request *rq;
++	rq = list_first_entry_or_null(&nd->queue, struct request, queuelist);
 +
-+		rq = list_entry(nd->queue.next, struct request, queuelist);
++	if (rq)
++	{
 +		list_del_init(&rq->queuelist);
-+		elv_dispatch_sort(q, rq);
-+
-+		//assign a position to the disk head
++		elv_dispatch_sort(q,rq);
 +		diskhead = blk_rq_pos(rq);
++		if (rq_data_dir(rq) == READ)
++			direction = 'R';
 +
-+		//print whether data is being read or being written
-+		char direction;
-+		if(rq_data_dir(rq) == READ)
-+		{
-+            direction = 'R';
-+		printk("DISPATCH: Satisfying requests in the READ direction.\n");
-+		}
 +		else
-+		{
-+            direction = 'W';
-+		printk("DISPATCH: Satisfying requests in the WRITE direction.\n");
-+		}
-+		printk("[SSTF] DISPATCH DIRECTION: %c DISPATCH REQUEST NUMBER: %lu\n", direction, (unsigned long)blk_rq_pos(rq));
++			direction = 'W';
 +
++		printk("CLOOK Dispatch. Direction: %c. Sector: %lu\n", direction, (unsigned long) blk_rq_pos(rq));	
 +		return 1;
 +	}
++
 +	return 0;
++
 +}
 +
 +static void sstf_add_request(struct request_queue *q, struct request *rq)
 +{
-+	printk("ADDING REQUEST\n");
-+
++	char direction;
 +	struct sstf_data *nd = q->elevator->elevator_data;
 +	struct list_head *cur = NULL;
 +
@@ -244,11 +238,11 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +	list_for_each(cur, &nd->queue)
 +	{
 +		struct request *c = list_entry(cur, struct request, queuelist);
-+		if(blk_rq_pos(rq) < diskhead) // check if request is bigger than disk head
++		if(blk_rq_pos(rq) > diskhead) // check if request is bigger than disk head
 +		{
 +            //keep servicing bigger requests until it comes across a smaller request
 +            //insert when current is smaller than the head and bigger than the request
-+			if(blk_rq_pos(c) < diskhead && blk_rq_pos(rq) < blk_rq_pos(c))
++			if(blk_rq_pos(c) < diskhead || blk_rq_pos(rq) < blk_rq_pos(c))
 +            {
 +                    break;
 +            }
@@ -257,31 +251,22 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +		else
 +		{
 +		//find where current is smaller than the disk head or current smaller than request
-+			if(blk_rq_pos(c) < diskhead ||
++			if(blk_rq_pos(c) < diskhead &&
 +			   blk_rq_pos(rq) < blk_rq_pos(c))
 +				break;
 +		}
 +	}
-+
-+	char direction;
 +
 +	//print out whether data is being read or written by checking direction
 +	if(rq_data_dir(rq) == READ)
 +		direction = 'R';
 +	else
 +		direction = 'W';
-+	printk("[SSTF] ADDING REQUEST. DIRECTION: %c REQUEST NUMBER: %lu\n", direction, (unsigned long)blk_rq_pos(rq));
++	printk("[SSTF] add %c %lu\n", direction, (unsigned long)blk_rq_pos(rq));
 +
 +	//add to end of queue
 +	list_add_tail(&rq->queuelist, cur);
 +
-+}
-+
-+static int sstf_queue_empty(struct request_queue *q)
-+{
-+	struct sstf_data *nd = q->elevator->elevator_data;
-+
-+	return list_empty(&nd->queue);
 +}
 +
 +static struct request *
@@ -291,28 +276,36 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +
 +	if (rq->queuelist.prev == &nd->queue)
 +		return NULL;
-+	return list_entry(rq->queuelist.prev, struct request, queuelist);
++	return list_prev_entry(rq, queuelist);
 +}
 +
-+static struct request *
-+sstf_latter_request(struct request_queue *q, struct request *rq)
-+{
-+	struct sstf_data *nd = q->elevator->elevator_data;
-+
-+	if (rq->queuelist.next == &nd->queue)
-+		return NULL;
-+	return list_entry(rq->queuelist.next, struct request, queuelist);
-+}
-+
-+static void *sstf_init_queue(struct request_queue *q)
++static int sstf_init_queue(struct request_queue *q, struct elevator_type *e)
 +{
 +	struct sstf_data *nd;
++	struct elevator_queue *eq;
++
++	eq = elevator_alloc(q,e);
++
++	if (!eq)
++		return -ENOMEM;
 +
 +	nd = kmalloc_node(sizeof(*nd), GFP_KERNEL, q->node);
++
 +	if (!nd)
-+		return NULL;
++	{
++		kobject_put(&eq->kobj);
++		return -ENOMEM;
++	}
++
++	eq->elevator_data = nd;
++
 +	INIT_LIST_HEAD(&nd->queue);
-+	return nd;
++
++	spin_lock_irq(q->queue_lock);
++	q->elevator = eq;
++	spin_unlock_irq(q->queue_lock);
++
++	return 0;
 +}
 +
 +static void sstf_exit_queue(struct elevator_queue *e)
@@ -328,9 +321,7 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +		.elevator_merge_req_fn		= sstf_merged_requests,
 +		.elevator_dispatch_fn		= sstf_dispatch,
 +		.elevator_add_req_fn		= sstf_add_request,
-+		.elevator_queue_empty_fn	= sstf_queue_empty,
 +		.elevator_former_req_fn		= sstf_former_request,
-+		.elevator_latter_req_fn		= sstf_latter_request,
 +		.elevator_init_fn		= sstf_init_queue,
 +		.elevator_exit_fn		= sstf_exit_queue,
 +	},
@@ -340,8 +331,7 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +
 +static int __init sstf_init(void)
 +{
-+	elv_register(&elevator_sstf);
-+	return 0;
++	return elv_register(&elevator_sstf);
 +}
 +
 +static void __exit sstf_exit(void)
@@ -354,6 +344,6 @@ diff -rupN /scratch/spring2017/10-04/linux-yocto-3.14/block/Assignment2OldFiles/
 +
 +
 +MODULE_AUTHOR("Nehemiah Edwards");
-+MODULE_LICENSE("--");
++MODULE_LICENSE("GPL");
 +MODULE_DESCRIPTION("C-LOOK IO scheduler");
 +
