@@ -1,5 +1,10 @@
 /*
  * elevator c-look
+ * sources referenced:
+ * http://www.makelinux.net/books/lkd2/ch13lev1sec5
+ * https://github.com/fusion2004/cop4610/blob/master/lab4/clook-iosched.c
+ * https://github.com/lborg019/clook-iosched
+ *
  */
 #include <linux/blkdev.h>
 #include <linux/elevator.h>
@@ -42,7 +47,7 @@ static int sstf_dispatch(struct request_queue *q, int force)
 		else
 			direction = 'W';
 
-		printk("CLOOK Dispatch. Direction: %c. Sector: %lu\n", direction, (unsigned long) blk_rq_pos(rq));	
+		printk("CLOOK Dispatch. Direction: %c. Sector: %lu\n", direction, (unsigned long) blk_rq_pos(rq));
 		return 1;
 	}
 
