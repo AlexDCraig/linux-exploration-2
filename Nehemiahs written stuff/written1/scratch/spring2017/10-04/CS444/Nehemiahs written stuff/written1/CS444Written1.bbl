@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{arora}
+Himanshu Arora.
+\newblock What are linux processes, threads, light weight processes, and
+  process state, Nov 2013.
+
+\bibitem{clay}
+Clay B.
+\newblock Why windows threads are better than posix threads, Aug 2016.
+
+\bibitem{2007}
+Dimitris.
+\newblock Processor scheduling and quanta in windows (and a bit about
+  unix/linux), Aug 2007.
+
+\bibitem{mckusick}
+Marshal~Kirk McKusick, George~V. Neville-Neil, and Robert~N.M. Watson.
+\newblock 4.1 introduction to process management | informit, Oct 2014.
+
+\bibitem{raman}
+Shankar Raman.
+\newblock Process behavior in windows and linux, Sep 2014.
+
+\end{thebibliography}
