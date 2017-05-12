@@ -141,8 +141,17 @@ Since both operating systems are derived from UNIX, there are of course plenty o
 The principal difference between these two UNIX-derived systems is that in FreeBSD, the block device driver type is not present. This is manifested in the fact that FreeBSD has two device driver types, which are character and network. Meanwhile, Linux has three device driver types: character, block, and network. On the surface, this may seem like a superficial difference, but in fact, this fundamentally changes the way these two systems handle I/O requests. FreeBSD treats the character device driver type as its cardinal type \cite{freeBSD2}. Unlike Linux, where the character device driver type is merely used to handle the requests of simple devices where I/O can be managed one byte at a time, FreeBSD handles all devices using this one-byte-at-a-time strategy. Meanwhile, in Linuxland, the block device driver type handles devices where requests are represented by a block of memory (hence the name). Oddly enough, the FreeBSD organization's programming handbook really looks down on the block device driver type, calling this disk device type "unusable, or at least dangerously unreliable", due to the kernel's caching of its operations.  
 \subsection{Provided functionality}
 \subsubsection{Similarities to Linux}
+Both Linux and FreeBSD offer a lot of built-in functionalities for programmers to use when doing systems programming. For example, both have convenient and easy-to-use methods that allocate memory within the kernel. Here is the function signature for allocating memory in the FreeBSD kernel:
+\begin{lstlisting}
+void* malloc(unsigned long size, struct malloc_type *type, int flags);
+\end{lstlisting}
+Meanwhile, in Linux, here is the simple method we use to allocate memory in the kernel: \cite{linux}
+\begin{lstlisting}
+void * kmalloc(size_t size, int flags);
+\end{lstlisting}
+As we can see, these two routines to allocate memory are very similar. In fact, FreeBSD and Linux provided functionalities universally tend to be somewhat close, possibly because of their shared inheritance from UNIX. Both FreeBSD and Linux have data structures for kernel usage including lists, queues, and trees, for instance. 
 \subsubsection{Differences from Linux}
-
+The primary difference between what these two operating systems offer in terms of provided functionalities, in my opinion, is found in how they implement cryptography, which has important ramifications for their respective securities. 
 
 \newpage
 \bibliography{CS444_Writing2_AlexHoffer}{}
