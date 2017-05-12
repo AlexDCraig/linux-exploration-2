@@ -1,0 +1,127 @@
+\documentclass[letterpaper,10pt,titlepage]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{alltt}
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{listings}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{vhistory}
+
+\hypersetup{%
+	colorlinks = true,
+	linkcolor = black
+}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\def\name{Alex Hoffer}
+
+%pull in the necessary preamble matter for pygments output
+\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {CS444 ``Operating Systems''},
+  pdftitle = {CS 444 Writeup 3},
+  pdfsubject = {CS 444 Writeup 3},
+  pdfpagemode = UseNone
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{3.5cm}
+
+        \textbf{Writeup 3}
+
+        \vspace{0.5cm}
+
+        \textbf{Alex Hoffer\\}
+	\textbf{Nehemiah Edwards}
+
+        \vspace{0.8cm}
+
+        CS 444\\
+        Spring 2017\\
+
+        \vspace{1cm}
+
+        \textbf{Abstract}\\
+
+        \vspace{0.5cm}
+
+	This third write-up details Alex and Nehemiah's work on Project 3. This project is to use a RAM Disk device driver(either sbull or sbd) and add encryption to it using the Linux Kernal's poorly documented crypto API.
+
+        \vfill
+
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Design plan for RAM Disk device driver}
+We plan to use a RAM Disk device driver(either sbull or sbd) for the Linux Kernel which allocates a chunk of memory and presents it as a block device. Using Linux Kernel's crypto API, we will add the encryption to our block device that will allow the device driver to encrypt and decrypt data as it reads and writes it. This will be developed in the drivers/block directory.
+
+\section{What we think the main point of this assignment is}
+We think the main point of this assignment is to work with a poorly documented API, in this case its the Linux Kernal's crypto API. This thought is supported by the fact that Kevin had stated in class that this was the point of having us do the assignment.
+
+\section{How we personally approached the problems}
+To begin, we began doing some research on how we could implement a RAM Disk device driver for the Linux Kernel. We took look at both sbd and sbull implementations.
+
+\section{How we ensured solution was correct}
+
+\section{What we learned}
+
+\section{Version control log}
+\begin{versionhistory}
+\end{versionhistory}
+
+\section{Work log}
+\subsection{Week 1}
+Nehemiah began by doing some research on how to implement a RAM Disk device driver for the Linux Kernel. He took at look at both sbd and sbull implementations.
+\subsection{Week 2}
+
+%\bibliographystyle{plain}
+%\bibliography{CS444_Writeup2}
+\end{document}
