@@ -16,4 +16,9 @@ Mark~E. Russinovich, Alex Ionescu, and David~A. Solomon.
 \newblock {\em Windows internals, Part 2}.
 \newblock Microsoft, 2012.
 
+\bibitem{windowsInt1}
+Mark~E. Russinovich, David~A. Solomon, and Alex Ionescu.
+\newblock {\em Windows internals}.
+\newblock Microsoft Press, 2012.
+
 \end{thebibliography}
