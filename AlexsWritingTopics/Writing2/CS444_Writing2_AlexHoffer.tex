@@ -1,0 +1,126 @@
+\documentclass[letterpaper,10pt,titlepage]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{alltt}
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{listings}
+\lstset{language=C, 
+basicstyle=\ttfamily,
+keywordstyle=\color{blue}\ttfamily,
+stringstyle=\color{red}\ttfamily,
+commentstyle=\color{green}\ttfamily,
+morecomment=[l][\color{magenta}]{\#}}
+\usepackage{cite}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\hypersetup{%
+	colorlinks = true,
+	linkcolor = black
+}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\def\name{Alex Hoffer}
+
+%pull in the necessary preamble matter for pygments output
+\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {CS444 ``Operating Systems''},
+  pdftitle = {CS 444 Writeup 2},
+  pdfsubject = {CS 444 Writeup 2},
+  pdfpagemode = UseNone
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{3.5cm}
+
+        \textbf{Differences and similarities in I/O and provided functionalities between the Linux, Windows, and FreeBSD Operating Systems}
+
+        \vspace{0.5cm}
+
+        \textbf{Alex Hoffer}
+
+        \vspace{0.8cm}
+
+        CS 444\\
+        May 2017\\
+	Spring 2017\\
+
+        \vfill
+
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+
+\section{Windows}
+\subsection{I/O}
+\subsubsection{Similarities to Linux}
+Both operating systems have a design goal to provide what \cite{windowsInt2} calls an "abstraction of devices", meaning a universal set of software tools by which the programmer can manage I/O functions. Additionally, both operating systems implement, in their own way, a \emph{Hardware Abstraction Layer} (HAL), which is a generalized interface that allows programs to directly manipulate device hardware.
+Note, with the HAL as a perfect example, both operating systems' inclusion of abstraction in their design decisions. Linux and Windows both desire to be able to manage the I/O requests of a large variety of devices and file systems, since they are intended to be commercially used operating systems. While they share this design principle, the way in which they approach this abstraction is the source of a lot of differences between the two systems. 
+\subsubsection{Differences from Linux}
+A key difference between Windows and Linux that explains further differences is the fact that Windows and its kernel are separated and are only combined through the use of calls to the Application Binary Interface (ABI) \cite{windowsSys}, while Linux's device drivers are located within the kernel itself and not relying on calls to the ABI \cite{linux}. Programmatically speaking, in Windows, files and devices are managed as \emph{objects} in the object-oriented paradigm, while in Linux files and devices are managed through the use of \emph{file descriptors}, further exemplifying the classic UNIX saying that "Everything is a file". (**Example code**) Additionally, Windows' I/O has three device driver layers that each I/O request can be subjected to (though a request can be handled by merely one of these layers). These three layers are \emph{filter, function,} and \emph{bus} \cite{windowsInt2}. On the other hand, Linux's drivers are defined as being \emph{block}, \emph{character}, or \emph{network}, and an I/O request can't be processed by all three. Since Windows' kernel doesn't have any device driver development, it instead relies on the \emph{Windows Driver Model} (WDM) to provide device drivers. When a piece of software in Windows requests an I/O operation, the Windows kernel dispatches the request to its \emph{I/O Manager}, which translates the request into an \emph{I/O Request Packet}, or IRP, which is then sent to the device driver layers. The function layer consists of the predominant drivers that map programming interfaces to specific devices, the bus layer helps out device hosting bus controllers, and the filter layer offers extra IRP processing. Meanwhile, in LinuxLand, these device drivers are wildly different: the character device driver type handles simple devices that can be read one byte at a time, the block device driver type handles complex devices whose requests come in the form of blocks of data, and networking options are there for moving data to and from a network.         
+\subsection{Provided functionality}
+\subsubsection{Similarities to Linux}
+\subsubsection{Differences from Linux}
+I
+\section{FreeBSD}
+\subsection{I/O}
+\subsubsection{Similarities to Linux}
+\subsubsection{Differences from Linux}I
+\subsection{Provided functionality}
+\subsubsection{Similarities to Linux}
+\subsubsection{Differences from Linux}
+I
+
+\newpage
+\bibliography{CS444_Writing2_AlexHoffer}{}
+\bibliographystyle{plain}
+\end{document}
