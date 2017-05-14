@@ -1,0 +1,18 @@
+% Structure of your LaTeX document:
+
+\ifdefined\rendertwocol
+    \documentclass[10pt,twocolumn,twoside]{IEEEtran}
+\else
+  \ifdefined\renderonecol
+    \documentclass[11pt,draftcls,onecolumn]{IEEEtran}
+  \else
+    % DEFAULT:
+    %\documentclass[11pt,draftcls,onecolumn]{IEEEtran}
+    \documentclass[10pt,twocolumn,twoside]{IEEEtran}
+  \fi
+\fi
+
+
+\begin{document}
+% ...
+\end{document}
