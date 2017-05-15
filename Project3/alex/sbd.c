@@ -8,7 +8,7 @@
 
 // This file is an adaptation of Jonathan Corbet's Simple Block Driver
 // from https://lwn.net/Articles/58720/ courtesy of Pat Patterson
-// We're adding encryption to read/writes of block devices.
+// We're adding encryption and decryption to read/writes of block devices.
 
 // Included files from Original:
 
@@ -28,18 +28,15 @@
 // Files I'm including:
 #include <linux/crypto.h> // Crypto API the teacher wants us to use.
 
-// Addition 1: We need some static variables and a cipher struct for encryption and decryption.
-static char* key = "project3key"; // key for encrypt/decrypt operations
-static int keyLength = 11; // how long the key is
-struct crypto_cipher* cipher; // for encrypt/decrypt operations, defined in crypto.h, this holds a crypto_tfm struct
-
 MODULE_LICENSE("Dual BSD/GPL");
 static char *Version = "1.4";
 
 static int major_num = 0;
 module_param(major_num, int, 0);
+
 static int logical_block_size = 512;
 module_param(logical_block_size, int, 0);
+
 static int nsectors = 1024; /* How big the drive is */
 module_param(nsectors, int, 0);
 
@@ -63,6 +60,21 @@ static struct sbd_device {
 	u8 *data;
 	struct gendisk *gd;
 } Device;
+
+// Addition 1: We need some static variables and a cipher struct for encryption and decryption.
+static char* key = "project3key"; // key for encrypt/decrypt operations
+
+// Pass the module the key as a c string command line arg
+// module_param(variable, type, permissions)
+module_param(key, charp, 0644);
+
+static int keyLength = 11; // how long the key is
+
+// pass the module the length of the key as an integer
+module_param(keyLength, int, 0644);
+
+struct crypto_cipher* cipher; // for encrypt/decrypt operations, defined in crypto.h, this holds a crypto_tfm struct
+
 
 // Alex's addition
 // A method to print what's happening in the kernel through the course of R/W request and Enc/Dec operations
