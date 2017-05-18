@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cp Assignment3NewFiles/Kconfig .
+cp Assignment3NewFiles/Makefile . 
