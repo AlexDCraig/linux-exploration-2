@@ -1,8 +1,8 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  18 MAY 2017 22:03
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  18 MAY 2017 17:43
 entering extended mode
  %&-line parsing enabled.
-**CS444_Writeup3
-(./CS444_Writeup3.tex
+**CS444_Writeup2
+(./CS444_Writeup2.tex
 LaTeX2e <2005/12/01>
 Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
 yphenation, arabic, basque, bulgarian, coptic, welsh, czech, slovak, german, ng
@@ -391,11 +391,13 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 Package: sets 
 \c@s@tlength=\count138
 )
-File CS444_Writeup3.hst not found.
+Reading file CS444_Writeup2.hst...
+(./CS444_Writeup2.hst)
 \vh@verfile=\write3
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 34.
- (./pygments.tex (/usr/share/texmf/tex/latex/fancyvrb/fancyvrb.sty
+ (./pygments.tex
+(/usr/share/texmf/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 1998/07/17
 
 Style option: `fancyvrb' v2.6, with DG/SPQR fixes <1998/07/17> (tvz)
@@ -416,8 +418,8 @@ Package: inputenc 2006/05/05 v1.1b Input encoding file
 File: latin1.def 2006/05/05 v1.1b Input encoding file
 )))
 Package hyperref Info: Option `colorlinks' set `true' on input line 64.
- (./CS444_Writeup3.aux)
-\openout1 = `CS444_Writeup3.aux'.
+ (./CS444_Writeup2.aux)
+\openout1 = `CS444_Writeup2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
 LaTeX Font Info:    ... okay on input line 66.
@@ -484,36 +486,43 @@ Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
 )
 LaTeX Info: Redefining \ref on input line 66.
 LaTeX Info: Redefining \pageref on input line 66.
- (./CS444_Writeup3.out)
-(./CS444_Writeup3.out)
+ (./CS444_Writeup2.out)
+(./CS444_Writeup2.out)
 \@outlinefile=\write5
-\openout5 = `CS444_Writeup3.out'.
+\openout5 = `CS444_Writeup2.out'.
 
  [1
 
-] (./CS444_Writeup3.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 8.
+] (./CS444_Writeup2.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 8.
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 ))
 \tf@toc=\write6
-\openout6 = `CS444_Writeup3.toc'.
+\openout6 = `CS444_Writeup2.toc'.
 
- [1] [2] [3]
-(./CS444_Writeup3.aux) ) 
+ [1] [2]
+\vh@hstfile=\write7
+ (./CS444_Writeup2.ver)
+(./CS444_Writeup2.ver) (./CS444_Writeup2.ver [3
+\openout3 = `CS444_Writeup2.ver'.
+
+\openout7 = `CS444_Writeup2.hst'.
+
+]) [4] (./CS444_Writeup2.aux) ) 
 Here is how much of TeX's memory you used:
- 8028 strings out of 256215
- 104709 string characters out of 1917023
- 196335 words of memory out of 1500000
- 11198 multiletter control sequences out of 10000+200000
+ 8043 strings out of 256215
+ 104951 string characters out of 1917023
+ 200814 words of memory out of 1500000
+ 11204 multiletter control sequences out of 10000+200000
  6857 words of font info for 27 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 35i,6n,37p,443b,371s stack positions out of 5000i,500n,6000p,200000b,15000s
+ 35i,6n,37p,1317b,505s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writeup3.dvi (4 pages, 13480 bytes).
+Output written on CS444_Writeup2.dvi (5 pages, 24100 bytes).
