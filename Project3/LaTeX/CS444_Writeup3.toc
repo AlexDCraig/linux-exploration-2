@@ -6,4 +6,4 @@
 \contentsline {section}{\numberline {6}Version control log}{2}{section.6}
 \contentsline {section}{\numberline {7}Work log}{2}{section.7}
 \contentsline {subsection}{\numberline {7.1}Week 1}{2}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Week 2}{2}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.2}Week 2}{3}{subsection.7.2}
