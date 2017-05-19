@@ -1,9 +1,0 @@
-\contentsline {section}{\numberline {1}Design plan for RAM Disk device driver}{2}{section.1}
-\contentsline {section}{\numberline {2}What we think the main point of this assignment is}{2}{section.2}
-\contentsline {section}{\numberline {3}How we personally approached the problems}{2}{section.3}
-\contentsline {section}{\numberline {4}How we ensured solution was correct}{2}{section.4}
-\contentsline {section}{\numberline {5}What we learned}{2}{section.5}
-\contentsline {section}{\numberline {6}Version control log}{2}{section.6}
-\contentsline {section}{\numberline {7}Work log}{2}{section.7}
-\contentsline {subsection}{\numberline {7.1}Week 1}{2}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Week 2}{2}{subsection.7.2}
