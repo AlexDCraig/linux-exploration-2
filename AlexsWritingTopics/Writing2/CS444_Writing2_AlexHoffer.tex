@@ -1,0 +1,159 @@
+\documentclass[letterpaper,10pt,titlepage]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{alltt}
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{listings}
+\lstset{language=C, 
+basicstyle=\ttfamily,
+keywordstyle=\color{blue}\ttfamily,
+stringstyle=\color{red}\ttfamily,
+commentstyle=\color{green}\ttfamily,
+morecomment=[l][\color{magenta}]{\#}}
+\usepackage{cite}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\hypersetup{%
+	colorlinks = true,
+	linkcolor = black
+}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\def\name{Alex Hoffer}
+
+%pull in the necessary preamble matter for pygments output
+\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {CS444 ``Operating Systems''},
+  pdftitle = {CS 444 Writeup 2},
+  pdfsubject = {CS 444 Writeup 2},
+  pdfpagemode = UseNone
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{3.5cm}
+
+        \textbf{Differences and similarities in I/O and provided functionalities between the Linux, Windows, and FreeBSD Operating Systems}
+
+        \vspace{0.5cm}
+
+        \textbf{Alex Hoffer}
+
+        \vspace{0.8cm}
+
+        CS 444\\
+        May 2017\\
+	Spring 2017\\
+
+        \vfill
+
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+
+\section{Windows}
+\subsection{I/O}
+\subsubsection{Similarities to Linux}
+Both operating systems have a design goal to provide what \cite{windowsInt2} calls an "abstraction of devices", meaning a universal set of software tools by which the programmer can manage I/O functions. Additionally, both operating systems implement, in their own way, a \emph{Hardware Abstraction Layer} (HAL), which is a generalized interface that allows programs to directly manipulate device hardware \cite{windowsInt1}.
+Note, with the HAL as a perfect example, both operating systems' inclusion of abstraction in their design decisions. Linux and Windows both desire to be able to manage the I/O requests of a large variety of devices and file systems, since they are intended to be commercially used operating systems. While they share this design principle, the way in which they approach this abstraction is the source of a lot of differences between the two systems.
+\subsubsection{Differences from Linux}
+A key difference between Windows and Linux that explains further differences is the fact that Windows and its kernel are separated and are only combined through the use of calls to the Application Binary Interface (ABI) \cite{windowsSys}, while Linux's device drivers are located within the kernel itself and not relying on calls to the ABI \cite{linux}. Programmatically speaking, in Windows, files and devices are managed as \emph{objects} in the object-oriented paradigm, while in Linux files and devices are managed through the use of \emph{file descriptors}, further exemplifying the classic UNIX saying that "Everything is a file". Additionally, Windows' I/O has three device driver layers that each I/O request can be subjected to (though a request can be handled by merely one of these layers). These three layers are \emph{filter, function,} and \emph{bus} \cite{windowsInt2}. Consider the following block of Microsoft C code courtesy of Microsoft's Github that initializes a function driver for a Bluetooth device:
+\begin{lstlisting}
+NTSTATUS
+DriverDeviceAdd(
+    IN  WDFDRIVER        _Driver,
+    IN  PWDFDEVICE_INIT  _DeviceInit
+    )
+\end{lstlisting}
+On the other hand, Linux's drivers are defined as being \emph{block}, \emph{character}, or \emph{network}, and an I/O request can't be processed by all three. Since Windows' kernel doesn't have any device driver development, it instead relies on the \emph{Windows Driver Model} (WDM) to provide device drivers. When a piece of software in Windows requests an I/O operation, the Windows kernel dispatches the request to its \emph{I/O Manager}, which translates the request into an \emph{I/O Request Packet}, or IRP, which is then sent to the device driver layers. The function layer consists of the predominant drivers that map programming interfaces to specific devices, the bus layer helps out device hosting bus controllers, and the filter layer offers extra IRP processing. Meanwhile, in LinuxLand, these device drivers are wildly different: the character device driver type handles simple devices that can be read one byte at a time, the block device driver type handles complex devices whose requests come in the form of blocks of data, and networking options are there for moving data to and from a network.         
+\subsection{Provided functionality}
+\subsubsection{Similarities to Linux}
+In both operating systems, their respective \emph{Application Programming Interfaces} (APIs) are written to respond to \emph{events}, which is when a user wants something to happen or the device wants to pass a message to the I/O manager. Windows has three provided functionalities for programmers to allow communication between Userland and I/O drivers: \emph{buffered I/O}, \emph{direct I/O}, and \emph{memory mapping} \cite{windowsSys}. Linux also provides these same three functionalities \cite{linux}. Both operating systems also provide system-defined data structures, algorithms, and cryptographic protocols, though there is some differences in which options are provided. For example, Linux and Windows kernels both have linked lists, though Windows provides both singly and double linked lists, while Linux only provides a doubly linked circular list by default. The Windows linked lists are included in the file "Ntdef.h", while the Linux kernel's list is included in the "list.h" file. In terms of cryptography, both use things like \emph{access control lists} (ACLs), PKI, and such to provide basic security. 
+
+\subsubsection{Differences from Linux}
+Windows linked lists come in either doubly linked or singularly linked varieties, while Linux only offers doubly linked lists by default, which means you must use a Linux patch file to change this functionality in the Linux kernel. Naturally, there are some differences in the two operating systems' APIs for when it comes to manipulating lists. For example, Windows offers routines like \emph{RemoveHeadList()}, whose function signature is listed below, which can perform convenient operations such as removing the first element of a list. 
+\begin{lstlisting}
+PLIST_ENTRY RemoveHeadList(
+  _Inout_ PLIST_ENTRY ListHead
+);
+\end{lstlisting}
+The same removal of a list head can only be completed in Linux using its "List.h" file by doing the following:
+\begin{lstlisting}
+if (!list_empty(myQueue->queue))
+    list_del(myQueue->queue.next);
+\end{lstlisting}
+As we can see, there are different routines provided in the two different systems for performing basic data structure manipulation. In addition to differences in data structure implementation between the two kernels, there is a lot of difference in how the two systems handle encryption. Some of these differences are difficult to compare since Linux is open source and Windows is proprietary. For example, while both kernels provide things like access control lists to institute a level of security, Windows also uses security measures such as the \emph{Microsoft crypto application programming interface} \cite{windowsSys}. Therein lies a fundamental and interesting difference between Linux and Windows that is microcosmic of a common theme expressed throughout my writing this quarter: while we can look directly at how Linux implements things like security and critize or laud them, Windows' source code is on lock down, so all we can do is look at helper routines and things of the like in order to assess how they might be used.  
+
+\section{FreeBSD}
+\subsection{I/O}
+\subsubsection{Similarities to Linux}
+Since both operating systems are derived from UNIX, there are of course plenty of similarities between FreeBSD and Linux in terms of how I/O is handled and which functionalities are provided. For example, both FreeBSD and Linux specify that devices should be accessed through device-nodes, which are a special type of file \cite{freeBSD1} \cite{linux}. Another similarity is that both FreeBSD and Linux have character and network device driver types. These device driver types are essentially the same in both of these operating systems, though FreeBSD emphasizes the character device driver type, while Linux emphasizes the block device driver type (described more in the "Differences from Linux" piece of this section).  
+\subsubsection{Differences from Linux}
+The principal difference between these two UNIX-derived systems is that in FreeBSD, the block device driver type is not present. This is manifested in the fact that FreeBSD has two device driver types, which are character and network. Meanwhile, Linux has three device driver types: character, block, and network. On the surface, this may seem like a superficial difference, but in fact, this fundamentally changes the way these two systems handle I/O requests. FreeBSD treats the character device driver type as its cardinal type \cite{freeBSD2}. Unlike Linux, where the character device driver type is merely used to handle the requests of simple devices where I/O can be managed one byte at a time, FreeBSD handles all devices using this one-byte-at-a-time strategy. Meanwhile, in Linuxland, the block device driver type handles devices where requests are represented by a block of memory (hence the name). Oddly enough, the FreeBSD organization's programming handbook really looks down on the block device driver type, calling this disk device type "unusable, or at least dangerously unreliable", due to the kernel's caching of its operations.  
+\subsection{Provided functionality}
+\subsubsection{Similarities to Linux}
+Both Linux and FreeBSD offer a lot of built-in functionalities for programmers to use when doing systems programming. For example, both have convenient and easy-to-use methods that allocate memory within the kernel. Here is the function signature for allocating memory in the FreeBSD kernel:
+\begin{lstlisting}
+void* malloc(unsigned long size, struct malloc_type *type, int flags);
+\end{lstlisting}
+Meanwhile, in Linux, here is the simple method we use to allocate memory in the kernel: \cite{linux}
+\begin{lstlisting}
+void * kmalloc(size_t size, int flags);
+\end{lstlisting}
+As we can see, these two routines to allocate memory are very similar. In fact, FreeBSD and Linux provided functionalities universally tend to be somewhat close, possibly because of their shared inheritance from UNIX. Both FreeBSD and Linux have data structures for kernel usage including lists, queues, and trees, for instance. 
+\subsubsection{Differences from Linux}
+The primary difference between what these two operating systems offer in terms of provided functionalities, in my opinion, is found in how they implement cryptography, which has important ramifications for their respective securities. Specifically, FreeBSD uses the \emph{Crypto} interface in its kernel \cite{freeBSD2}, while Linux uses its own \emph{Crypto} interface in its kernel \cite{linux}. Original, right? Regardless, Linux's Crypto interface is far more robust. Though FreeBSD's interface focuses solely on the user space, Linux's focuses on both the user space interfacec and the programming interface, and has loads of different cryptographic protocols built into its API. The breadth of Linux's different crypotgraphic protocols may be due to its popularity. Let us take the topic of built-in Cipher algorithms, for instance. FreeBSD includes the following functions that implement Cipher algorithms for security purposes: CRYPTO\_AES\_CBC, CRYPTO\_AES\_NIST\_GCM\_16, CRYPTO\_AES\_ICM, and CRYPTO\_AES. Meanwhile, documenting the number of Cipher algorithms that Linux offers here would be silly: there are far, far too many. In fact, Linux offers a multitude of different cryptographic protocols by which the programmer can pretty much set up the security of his system to his fancy. It is in the vastness of Linux's provided security functionalities compared to the relative sparseness of FreeBSD's provided security functionalities where we find the most profound differences, I think. 
+
+\newpage
+\bibliography{CS444_Writing2_AlexHoffer}{}
+\bibliographystyle{plain}
+\end{document}

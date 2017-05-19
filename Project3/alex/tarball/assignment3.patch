@@ -1,0 +1,218 @@
+diff -rupN Assignment3OldFiles/Kconfig Assignment3NewFiles/Kconfig
+--- Assignment3OldFiles/Kconfig	2017-05-15 22:00:12.985204344 -0700
++++ Assignment3NewFiles/Kconfig	2017-05-16 14:10:58.953793221 -0700
+@@ -15,6 +15,9 @@ menuconfig BLK_DEV
+ 
+ if BLK_DEV
+ 
++config CRYPTO_RAM_DISK
++	tristate "Group 1004 Block Driver"
++
+ config BLK_DEV_NULL_BLK
+ 	tristate "Null test block driver"
+ 
+diff -rupN Assignment3OldFiles/Makefile Assignment3NewFiles/Makefile
+--- Assignment3OldFiles/Makefile	2017-05-15 22:00:12.985204344 -0700
++++ Assignment3NewFiles/Makefile	2017-05-16 14:10:58.967793454 -0700
+@@ -5,6 +5,7 @@
+ # Rewritten to use lists instead of if-statements.
+ # 
+ 
++obj-m 				+= sbd.o
+ obj-$(CONFIG_MAC_FLOPPY)	+= swim3.o
+ obj-$(CONFIG_BLK_DEV_SWIM)	+= swim_mod.o
+ obj-$(CONFIG_BLK_DEV_FD)	+= floppy.o
+diff -rupN Assignment3OldFiles/sbd.c Assignment3NewFiles/sbd.c
+--- Assignment3OldFiles/sbd.c	2017-05-16 14:28:46.894112253 -0700
++++ Assignment3NewFiles/sbd.c	2017-05-18 14:40:57.334237154 -0700
+@@ -6,6 +6,12 @@
+  * Redistributable under the terms of the GNU GPL.
+  */
+ 
++// Additional Sources:
++// http://encryptionhowto.sourceforge.net/previous/Encryption-HOWTO-0.2.1-4.html// https://kernel.readthedocs.io/en/sphinx-samples/crypto-API.html
++// http://elixir.free-electrons.com/linux/latest/source/Documentation/crypto/api-intro.txt
++// And of course the Crypto API itself.
++
++// Files from Pat:
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/init.h>
+@@ -19,6 +25,9 @@
+ #include <linux/blkdev.h>
+ #include <linux/hdreg.h>
+ 
++// Files I'm including:
++#include <linux/crypto.h> // for cryptographic protocols
++
+ MODULE_LICENSE("Dual BSD/GPL");
+ static char *Version = "1.4";
+ 
+@@ -27,7 +36,7 @@ module_param(major_num, int, 0);
+ static int logical_block_size = 512;
+ module_param(logical_block_size, int, 0);
+ static int nsectors = 1024; /* How big the drive is */
+-module_param(nsectors, int, 0);
++module_param(nsectors, int, 0); 
+ 
+ /*
+  * We can tweak our hardware sector size, but the kernel talks to us
+@@ -50,11 +59,38 @@ static struct sbd_device {
+ 	struct gendisk *gd;
+ } Device;
+ 
++// CRYPTO ADDITIONS: 
++// 1) Use Crypto API to include a cipher struct to perform encryptions.
++// 2) Pass the key and its length to the module through parameters.
++// passing the key and its length were suggested by McGrath and this site:
++// http://www.chronox.de/crypto-API/crypto/api-skcipher.html
++// 3) Set the module parameters.
++struct crypto_cipher* cipher;
++static char* cryptoKey = "group1004";
++static int keyLength = 9;
++// Set key as parameter, tell module its char pointer, set permissions
++module_param(cryptoKey, charp, 0644);
++module_param(keyLength, int, 0644);
++
+ /*
+  * Handle an I/O request.
++ * ** MADE CHANGES HERE: Make it so SBD has encrypted data written to it
++ * and decrypted data read from it
+  */
+ static void sbd_transfer(struct sbd_device *dev, sector_t sector,
+ 		unsigned long nsect, char *buffer, int write) {
++	
++	// dev = struct corresponding to the block device
++	// sector = Sector in memory we start with.
++	// nsect = How many sectors we've got to read/write
++	// buffer = data to be r/w
++	// write = Is the request read or write? 
++	// offset = Variable that corresponds to how big each sector is so we can traverse through the block.
++	// nbytes = Variable that corresponds to how far we've got to traverse.
++	
++	int k = 0; // loop counter
++	u8* dst; // IF W: dst is device, src is block in mem. IF R: dst is block in mem, src is dst.
++	u8* src;
+ 	unsigned long offset = sector * logical_block_size;
+ 	unsigned long nbytes = nsect * logical_block_size;
+ 
+@@ -62,12 +98,84 @@ static void sbd_transfer(struct sbd_devi
+ 		printk (KERN_NOTICE "sbd: Beyond-end write (%ld %ld)\n", offset, nbytes);
+ 		return;
+ 	}
++
++	// Set the cipher's key and keyLength.
++	crypto_cipher_setkey(cipher, cryptoKey, keyLength);
++
++	/* Idea:
++ 	* If Write RQ: Traverse thru blocks, transfer blocks of data to device
++ 	*	Pass block data to device, then encrypt block data.
++ 	* If Read RQ: Traverse thru device data, write to blocks of memory
++ 	*/
++
+ 	if (write)
+-		memcpy(dev->data + offset, buffer, nbytes);
+-	else
+-		memcpy(buffer, dev->data + offset, nbytes);
++	{
++		src = buffer; // Our source of data to be written is blocks of memory.
++		dst = dev->data + offset; // Write this data to a device.
++
++		for (k = 0; k < nbytes; k += crypto_cipher_blocksize(cipher))
++		{
++			// crypto_cipher_encrypt_one takes three args:
++			// 1) Cipher struct.
++			// 2) Destination for data.
++			// 3) Source of data.
++			crypto_cipher_encrypt_one(cipher, dev->data + offset + k, buffer + k);
++		}
++
++		// Print out unencrypted data, can access thru use of dst ptr.
++		printk("I/O WRITE. UNENCRYPTED DATA:\n");
++		for (k = 0; k < 100; k++)
++		{
++			printk("%u", (unsigned) *src++);
++		}
++
++		printk("\n\n");
++
++		// Print out encrypted data, can access thru use of 
++		printk("I/O WRITE. ENCRYPTED DATA:\n");
++		for (k = 0; k < 100; k++)
++		{
++			printk("%u", (unsigned) *dst++);
++		}
++
++		printk("\n\n");
++	
++	}
++
++	// Read Request.
++	// Get data from device, put it into blocks.
++	// Convert encrypted data --> unencrypted data
++	else		
++	{
++		dst = buffer;
++		src = dev->data + offset;
++
++		for (k = 0; k < nbytes; k += crypto_cipher_blocksize(cipher))
++		{
++			// Same arguments as with encryption, except this method will be reversing the effects of encryption.
++			crypto_cipher_decrypt_one(cipher, buffer + k, dev->data + offset + k);
++		}
++
++		// Print out unencrypted, encrypted data from device and blocks, respectively.
++		printk("I/O READ. UNENCRYPTED DATA:\n");
++		for (k = 0; k < 100; k++)
++		{
++			printk("%u", (unsigned) *dst++);
++		}
++
++		printk("\n\n");
++	
++		printk("I/O READ. ENCRYPTED DATA:\n");
++		for (k = 0; k < 100; k++)
++		{
++			printk("%u", (unsigned) *src++);
++		}
++
++		printk("\n\n");
++	}
+ }
+ 
++// Iterate thru I/O request queue, transfer data from request to device
+ static void sbd_request(struct request_queue *q) {
+ 	struct request *req;
+ 
+@@ -115,6 +223,8 @@ static struct block_device_operations sb
+ };
+ 
+ static int __init sbd_init(void) {
++	cipher = crypto_alloc_cipher("aes", 0, 0);
++
+ 	/*
+ 	 * Set up our internal device.
+ 	 */
+@@ -130,6 +240,7 @@ static int __init sbd_init(void) {
+ 	if (Queue == NULL)
+ 		goto out;
+ 	blk_queue_logical_block_size(Queue, logical_block_size);
++	
+ 	/*
+ 	 * Get registered.
+ 	 */
+@@ -164,6 +275,7 @@ out:
+ 
+ static void __exit sbd_exit(void)
+ {
++	crypto_free_cipher(cipher);
+ 	del_gendisk(Device.gd);
+ 	put_disk(Device.gd);
+ 	unregister_blkdev(major_num, "sbd");
+@@ -172,4 +284,4 @@ static void __exit sbd_exit(void)
+ }
+ 
+ module_init(sbd_init);
+-module_exit(sbd_exit);
+\ No newline at end of file
++module_exit(sbd_exit);
