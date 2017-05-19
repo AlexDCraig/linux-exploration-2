@@ -1,0 +1,42 @@
+\begin {longtable}{ll>{\hsize =.5\hsize }X>{\hsize =1.5\hsize }X}
+\textbf {\vhversionname }
+ & \textbf {\vhdatename }
+ & \textbf {\vhauthorname }
+ & \textbf {\vhchangename }\\[1ex]
+1
+ & 5.10.2017
+ & \listset {Nehemiah}
+ & Added Project3 folder and start of Latex file\\
+2
+ & 5.14.2017
+ & \listset {Alex}
+ & Add base file sbd\\
+3
+ & 5.14.2017
+ & \listset {Alex}
+ & Find and add a simple block device c file from the internet\\
+4
+ & 5.14.2017
+ & \listset {Alex}
+ & Begin meddling with module parameters\\
+5
+ & 5.15.2017
+ & \listset {Alex}
+ & Change init and exit methods in sbd\\
+6
+ & 5.16.2017
+ & \listset {Alex}
+ & Change sbd\_transfer method in sbd\\
+7
+ & 5.17.2017
+ & \listset {Alex}
+ & Add final assignment3.patch in tarball folder\\
+8
+ & 5.18.2017
+ & \listset {Nehemiah}
+ & Additions to report on A3\\
+9
+ & 5.18.2017
+ & \listset {Alex}
+ & Revise and add to writeup.\\
+\end {longtable}
