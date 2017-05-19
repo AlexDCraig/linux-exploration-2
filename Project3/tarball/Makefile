@@ -29,4 +29,4 @@ aread:
 	acroread ${TARGET}.pdf
 
 clean:
-	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg
+	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.hst *.ver
