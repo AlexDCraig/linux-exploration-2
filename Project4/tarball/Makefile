@@ -1,4 +1,4 @@
-TARGET=CS444_Writeup3
+TARGET=CS444_Writeup4
 
 pdf: ps
 	ps2pdf ${TARGET}.ps

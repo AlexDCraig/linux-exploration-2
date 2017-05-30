@@ -1,0 +1,30 @@
+\begin {longtable}{ll>{\hsize =.5\hsize }X>{\hsize =1.5\hsize }X}
+\textbf {\vhversionname }
+ & \textbf {\vhdatename }
+ & \textbf {\vhauthorname }
+ & \textbf {\vhchangename }\\[1ex]
+1
+ & 5.24.2017
+ & \listset {Alex}
+ & modify original slob.c to keep running count of occupied pages\\
+2
+ & 5.25.2017
+ & \listset {Alex}
+ & modify slob to keep number of unused memory units\\
+3
+ & 5.26.2017
+ & \listset {Alex}
+ & modify slob to invoke system calls\\
+4
+ & 5.27.2017
+ & \listset {Alex}
+ & modify original slob.c to use best-fit\\
+5
+ & 5.29.2017
+ & \listset {Alex}
+ & Add old write up, need to adapt this to make final writeup\\
+6
+ & 5.30.2017
+ & \listset {Alex}
+ & Add final write up to a tarball directory with an assignment 4 patch file in preparation for tar.bz2'ing and submitting\\
+\end {longtable}
