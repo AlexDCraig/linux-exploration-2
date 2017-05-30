@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
 
 struct sharedResource
 {
@@ -33,7 +34,7 @@ void* accessResource()
 	while (toggle == 1)
 	{
 		printf("Thread %lu Waiting...\n", (unsigned long)ID);
-		sleep(5);
+		sleep(rand() % 10);
 
 		if (currentThreadsAccessingResource == 3)
 		{
@@ -46,7 +47,7 @@ void* accessResource()
 	currentThreadsAccessingResource -= 1;
 
 	printf("Thread %lu Working on the resource.\n", (unsigned long) ID);
-	sleep(10);
+	sleep(rand() % 10);
 	printf("Thread %lu done working on the resource.\n", (unsigned long) ID);
 
 	sem_post(&s1.resourceSemaphore);
@@ -55,6 +56,8 @@ void* accessResource()
 
 int main()
 {
+	srand(time(NULL));
+
 	// Create the three threads.
 	pthread_t thread1,
 	thread2,
