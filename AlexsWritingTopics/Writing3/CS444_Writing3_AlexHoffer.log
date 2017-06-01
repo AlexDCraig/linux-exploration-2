@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 JUN 2017 16:12
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 JUN 2017 16:24
 entering extended mode
  %&-line parsing enabled.
 **CS444_Writing3_AlexHoffer
@@ -562,45 +562,26 @@ File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 \openout5 = `CS444_Writing3_AlexHoffer.toc'.
 
  [1]
-
-LaTeX Warning: Citation `windows1' on page 2 undefined on input line 107.
-
-
-LaTeX Warning: Citation `linux1' on page 2 undefined on input line 107.
-
-
-LaTeX Warning: Citation `windows3' on page 2 undefined on input line 111.
-
-
-LaTeX Warning: Citation `linux2' on page 2 undefined on input line 111.
-
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 113.
+
 
 (/usr/share/texmf/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [2]
+) [2] [3] [4]
+(./CS444_Writing3_AlexHoffer.bbl
+Underfull \hbox (badness 1838) in paragraph at lines 49--52
+[]\OT1/ptm/m/n/8 N. Boeger and M. Tom-i-naga, ``Freebsd sys-tem pro-gram-ming,'
+' 2001. [On-line]. Avail-able:
+ []
 
-LaTeX Warning: Citation `freeBSD1' on page 3 undefined on input line 134.
-
-
-LaTeX Warning: Citation `freeBSD2' on page 3 undefined on input line 134.
-
-[3]
-
-LaTeX Warning: Citation `freeBSD3' on page 4 undefined on input line 145.
-
-[4] (./CS444_Writing3_AlexHoffer.bbl) (./CS444_Writing3_AlexHoffer.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+) [5] (./CS444_Writing3_AlexHoffer.aux) ) 
 Here is how much of TeX's memory you used:
- 9067 strings out of 256215
- 123214 string characters out of 1917023
- 213401 words of memory out of 1500000
- 12240 multiletter control sequences out of 10000+200000
- 27271 words of font info for 64 fonts, out of 1200000 for 2000
+ 9098 strings out of 256215
+ 123565 string characters out of 1917023
+ 213509 words of memory out of 1500000
+ 12260 multiletter control sequences out of 10000+200000
+ 30887 words of font info for 77 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  30i,6n,49p,1246b,1070s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_Writing3_AlexHoffer.dvi (5 pages, 29616 bytes).
+Output written on CS444_Writing3_AlexHoffer.dvi (6 pages, 33424 bytes).

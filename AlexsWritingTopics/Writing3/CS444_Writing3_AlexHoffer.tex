@@ -144,6 +144,6 @@ Notice the additional argument separating it from its Linux equivalent. Interest
 \subsubsection{Different memory allocator algorithms}
 One key difference programmers may notice between memory management in Linux and FreeBSD is the memory allocators they use. FreeBSD utilizes what is called the \emph{zone} allocator, which is considered a \emph{region-based} kind of memory management \cite{freeBSD3}. This means that modules in the kernel will tell the zone allocator the sizes of memory zones (think of these zones as chunks in memory) before running, and the zone allocator will split up memory to correspond to these zones. Then, when running, processes in need of memory are given these pre-sliced zones of memory. Linux, on the other hand, typically uses the \emph{slab} allocator \cite{linux2}. The slab allocator, which is like a version of the zone allocator that has been adapted to use methods that function essentially as constructors and destructors in object-oriented programming paradigms. Imagine that, object-oriented programming in the C language! 
 \newpage
-\bibliography{CS444_Writing3_AlexHoffer}{}
 \bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,CS444_Writing3_AlexHoffer}
 \end{document}
