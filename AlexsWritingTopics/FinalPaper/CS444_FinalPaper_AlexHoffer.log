@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  31 MAY 2017 23:39
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 JUN 2017 00:58
 entering extended mode
  %&-line parsing enabled.
 **CS444_FinalPaper_AlexHoffer
@@ -455,42 +455,19 @@ LaTeX Info: Redefining \pageref on input line 72.
 
 [1
 
-] (./CS444_FinalPaper_AlexHoffer.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 3.
-
-(/usr/share/texmf/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2002/01/19 v2.2g AMS font definitions
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 3.
-
-(/usr/share/texmf/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2002/01/19 v2.2g AMS font definitions
-))
+] (./CS444_FinalPaper_AlexHoffer.toc)
 \tf@toc=\write5
 \openout5 = `CS444_FinalPaper_AlexHoffer.toc'.
 
- [1] [2]
-
-LaTeX Warning: Citation `linux' on page 3 undefined on input line 134.
-
-[3]
-Overfull \hbox (7.37915pt too wide) in paragraph at lines 141--142
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
-
- []
-
-[4] (./CS444_FinalPaper_AlexHoffer.bbl) [5] (./CS444_FinalPaper_AlexHoffer.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+ [1] [2] [3]
+(./CS444_FinalPaper_AlexHoffer.bbl) [4] (./CS444_FinalPaper_AlexHoffer.aux) ) 
 Here is how much of TeX's memory you used:
- 8221 strings out of 256215
- 106177 string characters out of 1917023
- 194226 words of memory out of 1500000
- 11398 multiletter control sequences out of 10000+200000
- 7371 words of font info for 29 fonts, out of 1200000 for 2000
+ 7819 strings out of 256215
+ 102368 string characters out of 1917023
+ 193021 words of memory out of 1500000
+ 11010 multiletter control sequences out of 10000+200000
+ 4899 words of font info for 18 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 30i,6n,49p,1240b,1074s stack positions out of 5000i,500n,6000p,200000b,15000s
+ 30i,6n,49p,1293b,371s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on CS444_FinalPaper_AlexHoffer.dvi (6 pages, 33680 bytes).
+Output written on CS444_FinalPaper_AlexHoffer.dvi (5 pages, 14040 bytes).
