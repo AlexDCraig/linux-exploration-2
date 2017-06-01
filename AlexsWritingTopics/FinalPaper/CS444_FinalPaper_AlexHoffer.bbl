@@ -30,6 +30,11 @@ Evi Nemeth, Garth Snyder, Trent~R. Hein, and Ben Whaley.
 \newblock {\em Unix and Linux System Administration Handbook}.
 \newblock Prentice Hall, 2011.
 
+\bibitem{windows2}
+Mark~E. Russinovich, Alex Ionescu, and David~A. Solomon.
+\newblock {\em Windows internals, Part 2}.
+\newblock Microsoft, 2012.
+
 \bibitem{windows1}
 Mark~E. Russinovich, David~A. Solomon, and Alex Ionescu.
 \newblock {\em Windows internals}.

@@ -20,7 +20,4 @@
 \BOOKMARK [2][-]{subsection.4.2}{FreeBSD}{section.4}
 \BOOKMARK [3][-]{subsubsection.4.2.1}{Similarities to Linux}{subsection.4.2}
 \BOOKMARK [3][-]{subsubsection.4.2.2}{Differences from Linux}{subsection.4.2}
-\BOOKMARK [3][-]{subsubsection.4.2.3}{Portability}{subsection.4.2}
-\BOOKMARK [3][-]{subsubsection.4.2.4}{Allocating memory}{subsection.4.2}
-\BOOKMARK [3][-]{subsubsection.4.2.5}{Different memory allocator algorithms}{subsection.4.2}
 \BOOKMARK [1][-]{section.5}{Conclusion}{}
