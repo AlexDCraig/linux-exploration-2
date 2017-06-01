@@ -103,10 +103,11 @@ Memory management is a crucial aspect of any operating system. Memory management
 
 \section{Windows}
 \subsection{Similarities to Linux}
-\subsubsection{Technical}
+\subsubsection{Virtual memory addresses}
 Both systems support the use of 32-bit and 64-bit virtual memory addresses. 
-\subsubsection{Programmatic}
+\subsubsection{Hardware Abstraction Layer}
 Of course, a common similiarity that we encounter in the comparison of any two operating systems is their use of the \emph{Hardware Abstraction Layer} (HAL). The HAL is beneficial to programmers because it handles system-specific operations and everything else in the kernel is built on top of it, which means kernel developers can implement things without being concerned about what system it's running on. Since we're discussing two widely used operating systems in Windows and Linux, the fact that both use a HAL is unsurprising, after all, they wouldn't be that popular if their kernel operations weren't portable to a myriad of different computers. In the context of memory management, the HAL lets the programmer in both operating systems to write methods that can do things like memory paging in a universal manner. 
+\subsubsection{Data Structures}
 Naturally, the way in which kernels generally keep track of what segments of memory are occupied are through the use of data structures. There are some similarities in data structure usage to do this between these two systems. In Windows, the tree data structure is exclusively used, and each node of the memory tree consists of variables that are called \emph{Virtual Address Descriptors} (VADs). These descriptors hold whether a given node is free to write to, occupied with data, or reserved to be filled with data. In Linux, a different data structure IS used by default (noted below in the "Differences" section, along with implications), but when this data structure reaches 32 items, it is converted into a tree. This means that a programmer in both systems can access free, taken, and about-to-be-taken memory addresses using tree traversal methods.
 Here is the function signature for allocating memory to be placed in a memory tree in the Windows kernel:
 \begin{lstlisting}
@@ -118,7 +119,7 @@ Meanwhile, here is the function signature for allocating memory to be placed in 
 void * kmalloc(size_t size, int flags);
 \end{lstlisting}
 \subsection{Differences from Linux}
-\subsubsection{Technical}
+\subsubsection{User space vs Kernel space memory allowance}
 In Linux, 3 GB of memory is allocated for the user space and 1 GB of memory is allocated for the kernel space, while in Windows, only 2 GB of memory is allocated for the user space and 2 GB is allocated for the kernel space. This is an intriguing difference, since it means that the Linux memory management system favors the user space, while Windows places equal emphasis on both. Perhaps this is because Windows expects its kernel to handle larger, more robust computations where additional memory space is necessary. Another difference is that while both systems support 32-bit or 64-bit virtual memory addressses, only Linux has both built-in. For Windows, using 64-bit virtual memory addresses is only possible through the use of the \emph{Windows 64-bit Edition}.
 \subsubsection{Programmatic}
 As mentioned earlier, in Linux, if there are less than 32 items in a memory data structure, it is by default not a tree. It is instead a linked list. In this sense, memory management in Linux could be construed as being less rigid for the programmer than in Windows. Since linked lists are by reputation less efficient than trees, Linux likely switches to trees once the data structure hits the 32 item limit because if there are less than 32 items in a linked list, its difference in performance when compared to the tree data structure is negligible. But, since there are both trees and linked lists within the Linux memory management system, this means there are provided functionalities within the Linux kernel that aren't present in the Windows kernel related to linked list operations. Let's consider one that I encountered when Linux kernel hacking for Project 4 of Kevin McGrath's Operating Systems 2 course: 
