@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 JUN 2017 13:02
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2016.6.14)  1 JUN 2017 13:07
 entering extended mode
  %&-line parsing enabled.
 **CS444_FinalPaper_AlexHoffer
@@ -484,11 +484,7 @@ Overfull \hbox (1.64514pt too wide) in paragraph at lines 129--130
 in-dows and Linux share re-sources with other threads.
  []
 
-[3] [4]
-
-LaTeX Warning: Citation `rus121' on page 5 undefined on input line 177.
-
-[5] [6]
+[3] [4] [5] [6]
 
 LaTeX Warning: Citation `linux' on page 7 undefined on input line 240.
 
@@ -511,10 +507,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 8382 strings out of 256215
- 108600 string characters out of 1917023
+ 8381 strings out of 256215
+ 108592 string characters out of 1917023
  198887 words of memory out of 1500000
- 11556 multiletter control sequences out of 10000+200000
+ 11555 multiletter control sequences out of 10000+200000
  7371 words of font info for 29 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  30i,7n,49p,1552b,1794s stack positions out of 5000i,500n,6000p,200000b,15000s
