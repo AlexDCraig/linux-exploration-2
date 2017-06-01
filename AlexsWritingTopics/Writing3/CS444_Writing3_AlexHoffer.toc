@@ -8,4 +8,7 @@
 \contentsline {subsubsection}{\numberline {2.2.2}Programmatic}{3}{subsubsection.2.2.2}
 \contentsline {section}{\numberline {3}FreeBSD}{3}{section.3}
 \contentsline {subsection}{\numberline {3.1}Similarities to Linux}{3}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Programmatic}{3}{subsubsection.3.1.1}
 \contentsline {subsection}{\numberline {3.2}Differences from Linux}{3}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Technical}{3}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Programmatic}{4}{subsubsection.3.2.2}
