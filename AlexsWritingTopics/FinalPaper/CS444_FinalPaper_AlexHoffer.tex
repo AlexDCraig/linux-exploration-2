@@ -174,7 +174,7 @@ HANDLE WINAPI CreateThread(
 \end{lstlisting}
 Meanwhile, to create a thread in Linux, we simply use the \emph{pthread\_create} function, which takes only four parameters. Again, we can see through this example that Windows emphasizes the programmer's specification of attributes such as access control in the creation of threads and processes.
 \paragraph{Thread synchronization}
-An important distinction in Windows vs. Linux thread management is the inclusion of \emph{events} in Windows as a method of thread synchronization. Events are objects that are used to notify waiting threads when an event, like I/O operations on files, are completed \cite{rus121}. Windows also utilizes \emph{critical sections} while Linux implements \emph{conditional variables}, like \emph{pthread\_cond\_wait}. 
+An important distinction in Windows vs. Linux thread management is the inclusion of \emph{events} in Windows as a method of thread synchronization. Events are objects that are used to notify waiting threads when an event, like I/O operations on files, are completed \cite{windows2}. Windows also utilizes \emph{critical sections} while Linux implements \emph{conditional variables}, like \emph{pthread\_cond\_wait}. 
 
 \paragraph{Scheduling Classes} 
 In Windows, there are two scheduling classes, \emph{real time} and \emph{dynamic}. Windows favors threads that have a higher priority value (e.g. 32 rather than 0) attached to it \cite{windows1}. Linux, on the other hand, uses three scheduling classes, \emph{normal}, \emph{Fixed Round Robin}, and \emph{Fixed FIFO}, though the default scheduling class is the \emph{Fixed Round Robin}, or the \emph{Completely Fair Scheduler (CFS)} \cite{linux1}. Linux favors threads that have a lower priority value attached to it in an effort to institute a level of class equality in their scheduling methodology.
@@ -285,7 +285,7 @@ Both Linux and FreeBSD offer a lot of built-in functionalities for programmers t
 \begin{lstlisting}
 void* malloc(unsigned long size, struct malloc_type *type, int flags);
 \end{lstlisting}
-Meanwhile, in Linux, here is the simple method we use to allocate memory in the kernel: \cite{linux}
+Meanwhile, in Linux, here is the simple method we use to allocate memory in the kernel: \cite{linux1}
 \begin{lstlisting}
 void * kmalloc(size_t size, int flags);
 \end{lstlisting}
@@ -351,7 +351,7 @@ and places each passing page into the variable \emph{sp} so the programmer can s
 %
 \subsubsection{Similarities to Linux}
 \paragraph{Paging system}
-Like in the section on Windows' memory management similarity to Linux, it's important to note that a major similarity between FreeBSD and Linux is their emphasis on virtualized memory. Within both kernels' paging systems, they use what is called the "buddy system" when allocating memory at the page level \cite{freeBSD1} \cite{linux2}. The "buddy system" in this context is when a block of memory is divided, or \emph{partitioned}, into smaller chunks to better fit the size requirements of memory requests. This means that our favorite Best-Fit algorithm from Project 4 of Operating Systems 2 could just have easily been written into FreeBSD. Additionally, both kernels' paging systems use \emph{on-demand paging} and \emph{swapping} \cite{freeBSD2} \cite{linux}. On-demand paging refers to a construct of virtualization where "pages of data are not copied from disk to RAM until they are needed". It's a kind of swapping, which is when you copy everything related to a process from main memory to an auxiliary type of storage. Of course, these are necessary methods from a memory management perspective since occupying a massive amount of main memory would greatly slow down computing speed. 
+Like in the section on Windows' memory management similarity to Linux, it's important to note that a major similarity between FreeBSD and Linux is their emphasis on virtualized memory. Within both kernels' paging systems, they use what is called the "buddy system" when allocating memory at the page level \cite{freeBSD1} \cite{linux2}. The "buddy system" in this context is when a block of memory is divided, or \emph{partitioned}, into smaller chunks to better fit the size requirements of memory requests. This means that our favorite Best-Fit algorithm from Project 4 of Operating Systems 2 could just have easily been written into FreeBSD. Additionally, both kernels' paging systems use \emph{on-demand paging} and \emph{swapping} \cite{freeBSD2} \cite{linux1}. On-demand paging refers to a construct of virtualization where "pages of data are not copied from disk to RAM until they are needed". It's a kind of swapping, which is when you copy everything related to a process from main memory to an auxiliary type of storage. Of course, these are necessary methods from a memory management perspective since occupying a massive amount of main memory would greatly slow down computing speed. 
 
 % 
 % MM DIFFS, FREEBSD/LINUX
