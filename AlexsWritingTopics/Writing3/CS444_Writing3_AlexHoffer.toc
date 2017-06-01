@@ -14,4 +14,3 @@
 \contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-B}1}Portability}{4}{subsubsection.3.2.1}
 \contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-B}2}Allocating memory}{4}{subsubsection.3.2.2}
 \contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-B}3}Different memory allocator algorithms}{4}{subsubsection.3.2.3}
-\contentsline {section}{References}{5}{section*.2}
