@@ -1,0 +1,107 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn, titlepage]{IEEEtran}
+
+\def\name{Nehemiah Edwards}
+
+\usepackage{geometry}
+\geometry{letterpaper, margin=.75in}
+\setlength{\parindent}{0pt}
+
+\usepackage{cite}
+
+\usepackage{color}
+\usepackage{float}
+\usepackage{alltt}
+\usepackage{listings}
+\lstset{language=C, 
+basicstyle=\ttfamily,
+keywordstyle=\color{blue}\ttfamily,
+stringstyle=\color{red}\ttfamily,
+commentstyle=\color{green}\ttfamily,
+morecomment=[l][\color{magenta}]{\#}}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\begin{document}
+\begin{titlepage}
+	\begin{center}
+	\vspace*{3.5cm}
+	\textbf{I/O and provided functionalities\\
+	Nehemiah Edwards\\
+	CS 444\\
+	Spring 2017}
+	\vfill
+	\end{center}
+\end{titlepage}
+
+\newpage
+
+\section{I/O}
+\section{Windows}
+\subsection{Similarities to Linux}
+Although vastly different, Linux and Windows have some simularities in their I/O systems. Both Windows and Linux device drivers support "plug-and-play support and power management"/cite{turpitka}. Additionally, both of their driver API's are event-driven. Also their drivers support three I/O modes to transfer data which are: Buffered IO, Direct IO, and memory mapping, although all of which are handled in different ways/cite{turpitka}. They both have a Hardware Abstraction Layer(HAL) that acts as an interface for the hardware in the device drivers\cite{turpitka}.
+\subsection{Differences from Linux}
+The design of Windows device drivers are far different from the ones that Linux uses. Most of these differences are due to the fact that Linux is Open-source, while Linux isn't. Windows drivers are written with the Windows Driver Model(WDM), which allows drivers to be loaded and unloaded as necessary\cite{turpitka}. Windows has a wide range of device driver types, which are either classified as being a user-mode or a kernel-mode driver/cite{windows}. The Windows I/O system is make of three parts that includes the I/O manager, Plug and Play (PnP) manager, and power manager\cite{windows}. Any requests that come in are handled by the I/O manager that converts them into IO request packets(IRQs)\cite{turpitka}. These are then used to interpret what is needed to process the request and then transfers this info between device layers. I/O requests are categorized by one of three layers which are known as the filter, function, and bus layers.
+
+Linux on the otherhand, doesn't have a driver model or separation between layers. Instead each device driver typically acts as a module which can be unloaded and loaded in the kernel dynamically. In Windows, files and devices are managed by objects, while in Linux they are manged by what is known as file descriptors. Linux device drivers support three different types of devices: character, block, and network. Block devices are addressed by fixed chunks of data with random accessing, while character devices are accessed with stream of bytes with no random access.
+
+ 
+\section{FreeBSD}
+\subsection{Similarities to Linux}
+Both Linux and FreeBSD are very simmular in the way to which they handle I/O, as both were derived from UNIX. They both use block and character device types, though FreeBSD likes to refer to these as structured and unstructured devices, they are essentially the same thing\cite{freebsd}. 
+
+\subsection{Differences from Linux}
+Unlike Linux, FreeBSD doesn't make use of network devices, as they only have block and character/cite{freebsd} FreeBSD uses descriptors in order to refrences it's I/O streams/cite{freebsd}. These are obtained from open and socket system calls and can represent either a file, a pipe, or a socket. Linux does this differently though the use of what they call file descriptors that reference the files themselves.
+\section{Provided Functionality}
+\section{Windows}
+\subsection{Similarities to Linux}
+Both operating systems provide functionality for cryptography, data structures, and algorithms thought these are implemented in different ways. Both have some level of security behind their encryption systems, both of which include access control lists and. Both have forms of linked lists.
+\subsection{Differences from Linux}
+Windows has both singly-linked and doubly linked-lists, however Linux only has doubly linked circular lists. In Linux linked lists are constructed like this
+\begin{lstlisting}
+struct data{
+	struct *list_head node;
+	int data1;
+	char data2[10];
+	long data3;
+};
+\end{lstlisting}
+Where the *list_head node is used for maintaining the list. In windows, a singly linked list would be intailized like this:
+\begin{lstlisting}
+typedef struct _PROGRAM_ITEM {
+    SLIST_ENTRY ItemEntry;
+    int data; 
+} PROGRAM_ITEM, *PPROGRAM_ITEM;
+\end{lstlisting}
+Furthermore, The way in which you would modify each of these lists differ greatly. Like data structures, Cryptography is also performed differently in both Operating Systems. Since Linux is open source, it makes it relatively easy to get around their measures of security. In relation, Windows has more provided security measures in place and as it isn't an open source operating system, thus it is much more difficult to crack into\cite{windows}.
+\section{FreeBSD}
+\subsection{Similarities to Linux}
+FreeBSD and Linux are very similar in provided functionality since they both stem from UNIX. Both operating systems have a working form of cryptography I have found that they both make use of data structures such as hash tables, queues, and lists in ways that fundamentally the same, just having some differences in syntax. For example a hash table is created like this in FreeBSD:
+\begin{lstlisting}
+void *hashinit(int nelements, struct malloc_type	*type, u_long *hashmask);
+\end{lstlisting}
+\begin{lstlisting}
+#define hash_init(hashtable) __hash_init(hashtable, HASH_SIZE(hashtable))
+\end{lstlisting}
+\subsection{Differences from Linux}
+Where they differ in functionality the most lies within their individual implementations of cryptography. Linux's crypto driver has became far more advanced over FreeBSD. FreeBSD's bulit-in security algorithms are slim in comparison to what exists within the Linux Operating System. I would think that this difference exists because more people use Linux than FreeBSD, and thus it has developed further over the years.
+
+\begin{lstlisting}
+\end{lstlisting}
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{CS444Written2}
+
+\end{document}
