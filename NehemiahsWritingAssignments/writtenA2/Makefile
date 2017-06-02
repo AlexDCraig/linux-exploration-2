@@ -1,4 +1,4 @@
-TARGET=CS444_Writeup4
+TARGET=CS444Written2
 
 pdf: ps
 	ps2pdf ${TARGET}.ps
@@ -29,4 +29,4 @@ aread:
 	acroread ${TARGET}.pdf
 
 clean:
-	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.hst *.ver
+	rm -f *.pdf *.ps *.toc *.dvi *.out *.log *.aux *.bbl *.blg *.pyg
