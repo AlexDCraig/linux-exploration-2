@@ -1,0 +1,102 @@
+--- A4OldFiles/slob.c	2017-05-29 14:47:51.489390211 -0700
++++ A4NewFiles/slob.c	2017-05-29 18:49:35.619602984 -0700
+@@ -56,6 +56,9 @@
+  * in order to prevent random node placement.
+  */
+ 
++// *** ALEX: Modifications to original slob.c file in order to implement
++// Best Fit rather than First Fit algo.
++
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ 
+@@ -197,6 +200,7 @@ static int slob_last(slob_t *s)
+ 	return !((unsigned long)slob_next(s) & ~PAGE_MASK);
+ }
+ 
++// Create a new page and return its address for access.
+ static void *slob_new_pages(gfp_t gfp, int order, int node)
+ {
+ 	void *page;
+@@ -278,14 +282,16 @@ static void *slob_page_alloc(struct page
+ static void *slob_alloc(size_t size, gfp_t gfp, int align, int node)
+ {
+ 	// Alex's addition. We'll want to use a temporary list to iterate through each of the free_slob lists to see what kind of unoccupied memory we're working with.
+-	struct list_head *memoryCheckList;
+-	
++	// Alex's addition. We'll also want a page structure address variable to use for figuring out where the "best fit" is. "Best fit" means "smallest possible" page of memory for a given chunk of data
++
+ 	// reset the memory units that are available
+ 	availUnits = 0;
+ 
+ 	struct page *sp;
++	struct page *attemptBestFitPage = NULL; // to hold best fit page
+ 	struct list_head *prev;
+ 	struct list_head *slob_list;
++	struct list_head *memoryCheckList = NULL; // to iterate lists
+ 	slob_t *b = NULL;
+ 	unsigned long flags;
+ 
+@@ -312,21 +318,50 @@ static void *slob_alloc(size_t size, gfp
+ 		if (sp->units < SLOB_UNITS(size))
+ 			continue;
+ 
+-		/* Attempt to alloc */
++		/* Attempt to alloc
++ 		* **Alex: this isn't where we want to alloc(), this 
++ 		* is a sequence of steps that are intended for First Fit
++ 		* only since as of these steps, we do not know where the
++ 		* most appropriately sized portion of memory is 	 
+ 		prev = sp->list.prev;
+ 		b = slob_page_alloc(sp, size, align);
+ 		if (!b)
+-			continue;
++			continue; */
+ 
+ 		/* Improve fragment distribution and reduce our average
+ 		 * search time by starting our next search here. (see
+-		 * Knuth vol 1, sec 2.5, pg 449) */
++		 * Knuth vol 1, sec 2.5, pg 449) 
++		 * *** Alex: Search time is unimportant and this search
++		 * is irrelevant to an algorithm that prefers a Best Fit
+ 		if (prev != slob_list->prev &&
+ 				slob_list->next != prev->next)
+ 			list_move_tail(slob_list, prev->next);
+-		break;
++		break; */
++		
++		/* ***ALEX: METHODS FOR BEST FIT ALGORITHM IMPLEMENTATION */
++		// looping through, if there has been no attempt to 
++		// find a best fit page, we are on the first iteration,
++		// meaning that the best fit currently is the present page
++		// The present page is, of course, "sp"
++		if (attemptBestFitPage == NULL) 	
++			attemptBestFitPage = sp;
++
++		// Find the "Best Fit" page, which is the page that 
++		// is the smallest fragment of memory that will hold 
++		// our page
++		if (attemptBestFitPage->units > sp->units)
++			attemptBestFitPage = sp;
++
+ 	}
+ 
++			/* ***ALEX: Allocate where our best fit page is. Note that this is the same thing as the commented-out original code 
++ 		* above, it's just outside of the list search because we must search over all possible pages using that list search
++ 		* before we can be sure we've found the "Best Fit" */
++		if (attemptBestFitPage != NULL)
++			b = slob_page_alloc(attemptBestFitPage, size, align);
++
++
++		// ALEX: Same stuff as in the original First Fit implementation modifications I Made.
+ 		// Alex's addition: Use memoryCheckList to iterate through each of the lists of free pages to see what kind of free memory exists within the SLOB.
+ 		// Alex: Observe the free memory in the "small" list.
+ 		memoryCheckList = &free_slob_small;
+@@ -372,6 +407,7 @@ static void *slob_alloc(size_t size, gfp
+ 		BUG_ON(!b);
+ 		spin_unlock_irqrestore(&slob_lock, flags);
+ 		
++		// same as in orig best fit implementation mods
+ 		// Alex's addition: The algorithm is allocating a new page, so increase the number of pages involved in the program using pre-established variable.
+ 		pageCount += 1;
+ 	}
